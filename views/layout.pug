@@ -1,0 +1,28 @@
+doctype html
+html(lang='en')
+  head
+    title='Tesis Dinámica de Tecleo'
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet',
+        href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css',
+        integrity='sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z',
+        crossorigin='anonymous')
+
+    link(rel="stylesheet", href="./stylesheets/css.css")
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
+
+    block css
+    block scripts
+  body(class='bg-light')
+
+    div(class='container')
+        div(class='py-5 text-center')
+            a(href='/')
+              img(class='d-block mx-auto mb-4', src='./images/bootstrap-solid.svg', alt='logo', width='72', height='72')
+            h2 Tesis: Recolección de Patrones de Tecleo
+    
+    
+        block content
+
+    include bsScript

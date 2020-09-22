@@ -1,0 +1,16 @@
+.form-signup {
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+}
+
+button, a, hr {
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+    margin-top: 20px;
+}
+
+a{
+    margin-bottom: 20px;
+}

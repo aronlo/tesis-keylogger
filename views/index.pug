@@ -1,0 +1,22 @@
+extends layout
+
+block css
+  link(rel="stylesheet", href="/stylesheets/index.css")
+
+block scripts
+    script(src='/js/index.js')
+
+block content
+
+    form(class='form-signin' style='margin-top:30px')
+        label(for='etEmail', class='sr-only') Correo electrónico
+        input(type='email', id='etEmail', class='form-control', placeholder='E-mail')
+
+        label(for='etPaswword', class='sr-only') Contraseña
+        input(type='password', id='etPaswword', class='form-control', placeholder='Contraseña')
+
+        button(class='btn btn-lg btn-primary btn-block') Iniciar Sesión
+
+        hr
+
+        a(class='btn btn-lg btn-primary btn-block', href='/signup') Registrarse

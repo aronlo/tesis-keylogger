@@ -1,0 +1,86 @@
+extends layout
+
+block css
+  link(rel="stylesheet", href="/stylesheets/signup.css")
+
+block scripts
+    script(src='/js/signup.js')
+
+block content
+
+    form(class='needs-validation form-signup', id='signup_form', novalidate, autocomplete="off")
+    
+        div(class='mb-3')
+            label(for='etName') Nombre
+            input(type='text', class='form-control', id='etName' placeholder='Nombre', required)
+            div(class='invalid-feedback') Ingrese un nombre válido
+        
+
+        div(class='mb-3')
+            label(for='etAge') Edad
+            input(type='number', class='form-control', id='etAge' placeholder='Edad',min='1', max='90' ,required)
+            div(class='invalid-feedback') Ingrese una edad válida
+
+
+
+        div(class='mb-3')
+            label(for='etEmail') E-mail: nos ayudará a mandarte correos recordatorios
+            input(type='email', class='form-control', id='etEmail' placeholder='Email', required)
+            div(class='invalid-feedback') Ingrese un email válido
+
+
+        div(class='mb-3')
+            label(for='etPassword') Contraseña
+            input(type='text', class='form-control', id='etPassword' placeholder='Contraseña', minlength="6",required)
+            div(class='invalid-feedback') Ingrese una contraseña simple de más de 6 caracteres
+
+
+        div(class='d-block my-3')
+            label(for='rdGenre') Género
+            div(class='custom-control custom-radio')
+                input(type='radio',name='rdGenre', id='male', class='custom-control-input', value='male', required)
+                label(for='male', class='custom-control-label') Masculino
+
+            div(class='custom-control custom-radio')
+                input(type='radio',name='rdGenre', id='female', class='custom-control-input',value='female', required)
+                label(for='female', class='custom-control-label') Femenino
+            div(class='invalid-feedback') Seleccione una opción
+
+
+        div(class='d-block my-3')
+            label(for='rdHandedness') Mano dominante
+            div(class='custom-control custom-radio')
+                input(type='radio',name='rdHandedness', id='right_handed', class='custom-control-input',value='right', required)
+                label(for='right_handed', class='custom-control-label') Diestro
+
+            div(class='custom-control custom-radio')
+                input(type='radio',name='rdHandedness', id='left_handed', class='custom-control-input',value='left', required)
+                label(for='left_handed', class='custom-control-label') Zurdo
+            div(class='invalid-feedback') Seleccione una opción
+
+
+        div(class='d-block my-3')
+            label(for='rdHandDesease') ¿Consumes algún medicamento o presentas alguna enfermedad que pueda afectar la motricidad en la manos?
+            
+            div(class='custom-control custom-radio')
+                input(type='radio',name='rdHandDesease', id='no_illness', class='custom-control-input',value='no', required)
+                label(for='no_illness', class='custom-control-label') No
+
+            div(class='custom-control custom-radio')
+                input(type='radio',name='rdHandDesease', id='may_be_illness', class='custom-control-input',value='maybe' ,required)
+                label(for='may_be_illness', class='custom-control-label') Tal vez
+            
+
+            div(class='custom-control custom-radio')
+                input(type='radio',name='rdHandDesease', id='yes_illness', class='custom-control-input',value='yes', required)
+                label(for='yes_illness', class='custom-control-label') Si
+            div(class='invalid-feedback') Seleccione una opción
+            
+
+
+
+    button(class='btn btn-lg btn-primary btn-block', id='btnSubmit', onclick='sign_up()') Crear cuenta
+
+    hr
+
+    a(class='btn btn-lg btn-primary btn-block', href='/') Regresar
