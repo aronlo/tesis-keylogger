@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const User = require('../models/user');
 const Record = require('../models/record');
+var mongoose = require('mongoose');
 var Chance = require('chance');
 var nodemailer = require('nodemailer');
 var moment = require('moment');
@@ -11,6 +12,17 @@ router.get('/time', (req, res) => {
     res.json({
         timeToString: currentTime.toString(),
         time: currentTime
+    })
+})
+
+router.get('/status', (req, res) => {
+    var currentTime = new Date
+    // 0: disconnected
+    // 1: connected
+    // 2: connecting
+    // 3: disconnecting
+    res.json({
+        mongo: mongoose.connection.readyState
     })
 })
 
@@ -28,9 +40,9 @@ router.post('/login', (req, res) => {
             } else {
                 //Check if already exist records
                 Record.find({
+                    belongedUserId: userDoc._id,
+                    performedUserId: userDoc._id,
                     date: {
-                        belongedUserId: userDoc._id,
-                        performedUserId: userDoc._id,
                         $gte: moment().startOf('day').toDate(),
                         $lte: moment().endOf('day').toDate()
                     }
@@ -61,8 +73,36 @@ router.post('/login', (req, res) => {
                             res.json(response)
                         })
 
+                    } else if ( recordDocs.length < 3) {
+                        var lastRecord = recordDocs.slice(-1)[0]
+                        var new_record = new Record({
+                            belongedUserId: userDoc._id,
+                            performedUserId: userDoc._id,
+                            date: new Date,
+                            sessionIndex: lastRecord.sessionIndex + 1,
+                            valid: true,
+                            username: userDoc.username,
+                            password: userDoc.password,
+                            rawUsernameKeydown: req.body.rawUsernameKeydown,
+                            rawUsernameKeyup: req.body.rawUsernameKeyup,
+                            rawPasswordKeydown: req.body.rawPasswordKeydown,
+                            rawPasswordKeyup: req.body.rawPasswordKeyup,
+                        })
+
+                        new_record.save((err, doc) => {
+                            req.session.user = doc
+
+                            // This user won't have to log in for a year
+                            req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
+
+                            response.status = 1
+                            response.data = userDoc
+                            res.json(response)
+                        })
                     } else {
-                        //Ya existe registros
+                        response.status = 0
+                        response.error = "Se alcanzó el maximo de intentos permitidos por día."
+                        res.json(response)
                     }
                 })
 
