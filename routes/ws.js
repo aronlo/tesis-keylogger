@@ -19,60 +19,56 @@ router.post('/login', (req, res) => {
         username: req.body.username,
         password: req.body.password
     })
-    .exec((err, userDoc) => {
-        var response = {}
-        if (userDoc == null) {
-            response.status = 0
-            response.error = "No se encontró ningun usuario con los datos enviados en la base de datos. Revisa tu correo para ver las credenciales."
-            res.json(response)
-        } else {
-            
-            //var a = new Record({date: new Date})
-            //a.save()
-
-            //Check if already exist records
-            Record.find({
-                date: {
-                    $gte: moment().startOf('day').toDate(),
-                    $lte: moment().endOf('day').toDate()
-                }
-            }).exec((err, recordDocs) => {
-                console.log(recordDocs)
-                if (recordDocs.length == 0) {
-                    var new_record = new Record({
+        .exec((err, userDoc) => {
+            var response = {}
+            if (userDoc == null) {
+                response.status = 0
+                response.error = "No se encontró ningun usuario con los datos enviados en la base de datos. Revisa tu correo para ver las credenciales."
+                res.json(response)
+            } else {
+                //Check if already exist records
+                Record.find({
+                    date: {
                         belongedUserId: userDoc._id,
                         performedUserId: userDoc._id,
-                        date: new Date,
-                        sessionIndex: 0,
-                        valid: true,
-                        username: userDoc.username,
-                        password: userDoc.password,
-                        rawUsernameKeydown: req.body.rawUsernameKeydown,
-                        rawUsernameKeyup: req.body.rawUsernameKeyup,
-                        rawPasswordKeydown: req.body.rawPasswordKeydown,
-                        rawPasswordKeyup: req.body.rawPasswordKeyup,
-                    })
+                        $gte: moment().startOf('day').toDate(),
+                        $lte: moment().endOf('day').toDate()
+                    }
+                }).exec((err, recordDocs) => {
+                    if (recordDocs.length == 0) {
+                        var new_record = new Record({
+                            belongedUserId: userDoc._id,
+                            performedUserId: userDoc._id,
+                            date: new Date,
+                            sessionIndex: 0,
+                            valid: true,
+                            username: userDoc.username,
+                            password: userDoc.password,
+                            rawUsernameKeydown: req.body.rawUsernameKeydown,
+                            rawUsernameKeyup: req.body.rawUsernameKeyup,
+                            rawPasswordKeydown: req.body.rawPasswordKeydown,
+                            rawPasswordKeyup: req.body.rawPasswordKeyup,
+                        })
 
-                    new_record.save((err, doc) => {
-                        req.session.user = doc
+                        new_record.save((err, doc) => {
+                            req.session.user = doc
 
-                        // This user won't have to log in for a year
-                        req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
+                            // This user won't have to log in for a year
+                            req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
 
-                        response.status = 1
-                        response.data = userDoc
-                        res.json(response)
-                    })
-                    
+                            response.status = 1
+                            response.data = userDoc
+                            res.json(response)
+                        })
 
-                } else {
-                    //Ya existe registros
-                }
-            })
+                    } else {
+                        //Ya existe registros
+                    }
+                })
 
-        }
-        
-    })
+            }
+
+        })
 })
 
 router.post('/signup', (req, res) => {
