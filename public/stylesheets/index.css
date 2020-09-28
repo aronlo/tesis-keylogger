@@ -1,4 +1,11 @@
-form {
-    margin-left: 35%;
-    margin-right: 35%;
+.paragraph{
+    text-align: center;
+}
+
+
+button, a, hr {
+    width: 100%;
+    max-width: 330px;
+    margin: auto;
+    margin-top: 20px;
 }

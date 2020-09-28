@@ -1,0 +1,5 @@
+
+
+window.onload = () =>  {
+    $("#btnSend").show()
+}

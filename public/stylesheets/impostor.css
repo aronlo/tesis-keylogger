@@ -1,0 +1,18 @@
+.paragraph{
+    text-align: center;
+}
+
+
+.paragraph-justify{
+    text-align: justify;
+    width: 100%;
+    max-width: 650px;
+    margin: auto;
+    margin-bottom: 30px;
+}
+
+.form-impostor{
+    width: 100%;
+    max-width: 650px;
+    margin: auto;
+}

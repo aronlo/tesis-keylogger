@@ -2,6 +2,7 @@ var createError = require('http-errors')
 var express = require('express')
 var path = require('path')
 var cookieParser = require('cookie-parser')
+var session = require('express-session')
 var logger = require('morgan')
 var favicon = require('express-favicon');
 var useragent = require('express-useragent');
@@ -10,6 +11,8 @@ require('dotenv').config()
 
 var indexRouter = require('./routes/index')
 var signUpRouter = require('./routes/signUp')
+var impostorRouter = require('./routes/impostor')
+var logoutRouter = require('./routes/logout')
 var wsRouter = require('./routes/ws')
 
 var compression = require('compression')
@@ -38,6 +41,11 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser())
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true
+}))
 app.use(useragent.express())
 //app.use(helmet())
 app.use(compression())
@@ -48,6 +56,8 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 
 app.use('/', indexRouter)
 app.use('/signup', signUpRouter)
+app.use('/impostor', impostorRouter)
+app.use('/logout', logoutRouter)
 app.use('/ws', wsRouter)
 
 

@@ -4,8 +4,6 @@ var rawUsernameKeyup
 var rawPasswordKeydown 
 var rawPasswordKeyup
 
-var baseTime =  new Big(performance.timing.navigationStart)
-
 function resetUsernameLog() {
     rawUsernameKeydown = []
     rawUsernameKeyup = []
@@ -26,13 +24,13 @@ function usernameKeylog(event) {
         rawUsernameKeydown.push({
             keyCode: event.keyCode,
             name: event.code,
-            timeStamp: baseTime.plus(performance.now()).toString()
+            timeStamp: Date.now()
         })
     } else if ('keyup' == event.type) {
         rawUsernameKeyup.push({
             keyCode: event.keyCode,
             name: event.code,
-            timeStamp: baseTime.plus(performance.now()).toString()
+            timeStamp: Date.now()
         })
         //BackSpace
         if (event.keyCode == 8) {
@@ -49,13 +47,13 @@ function passwordKeylog(event) {
         rawPasswordKeydown.push({
             keyCode: event.keyCode,
             name: event.code,
-            timeStamp: baseTime.plus(performance.now()).toString()
+            timeStamp: Date.now()
         })
     } else if ('keyup' == event.type) {
         rawPasswordKeyup.push({
             keyCode: event.keyCode,
             name: event.code,
-            timeStamp: baseTime.plus(performance.now()).toString()
+            timeStamp: Date.now()
         })
         //BackSpace
         if (event.keyCode == 8) {

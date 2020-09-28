@@ -8,6 +8,10 @@ block scripts
 
 block content
 
+    div(class='paragraph')
+
+      h5 Creación de Cuenta
+
     form(class='needs-validation form-signup', id='signup_form', novalidate, autocomplete="off")
     
         div(class='mb-3')
@@ -15,6 +19,10 @@ block content
             input(type='text', class='form-control', id='etName' placeholder='Nombre', required)
             div(class='invalid-feedback') Ingrese un nombre válido
         
+        div(class='mb-3')
+            label(for='etLastname') Apellido
+            input(type='text', class='form-control', id='etLastname' placeholder='Apellido', required)
+            div(class='invalid-feedback') Ingrese un apellido válido
 
         div(class='mb-3')
             label(for='etAge') Edad
@@ -22,16 +30,19 @@ block content
             div(class='invalid-feedback') Ingrese una edad válida
 
 
-
         div(class='mb-3')
             label(for='etEmail') E-mail: nos ayudará a mandarte correos recordatorios
             input(type='email', class='form-control', id='etEmail' placeholder='Email', required)
             div(class='invalid-feedback') Ingrese un email válido
 
+        div(class='mb-3')
+            label(for='etUsername') Nombre de Usuario
+            input(type='text', class='form-control', id='etUsername' placeholder='Nombre de Usuario', minlength="6", required)
+            div(class='invalid-feedback') Ingrese un nombre de usuario simple de más de 6 caracteres
 
         div(class='mb-3')
-            label(for='etPassword') Contraseña
-            input(type='text', class='form-control', id='etPassword' placeholder='Contraseña', minlength="6",required)
+            label(for='etPassword') Contraseña: una simple y que te sea facil de recordar.
+            input(type='text', class='form-control', id='etPassword' placeholder='Contraseña', minlength="6", required)
             div(class='invalid-feedback') Ingrese una contraseña simple de más de 6 caracteres
 
 

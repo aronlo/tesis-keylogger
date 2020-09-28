@@ -4,12 +4,17 @@ var Schema = mongoose.Schema
 
 var UserSchema = new Schema({
     name: { type: String },
+    lastname: { type: String },
     age: { type: Number },
     email: { type: String },
+    username: { type: String },
     password: { type: String },
+    originalPassword: { type: String },
     genre: { type: String },
     handedness: { type: String },
     handDesease: { type: String },
+    date: { type: Date, default: Date.now },
+    ipAddress: { type: String },
     userAgent: { type: String }
 })
 
