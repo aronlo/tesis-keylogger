@@ -11,4 +11,15 @@ router.get('/', function (req, res) {
 
 })
 
+// GET home page.
+router.get('/test', function (req, res) {
+
+
+    res.json({
+        ipAddress: req.body.ip_address,
+        userAgent: req.useragent.browser + "_" + req.useragent.os
+    })
+
+})
+
 module.exports = router
