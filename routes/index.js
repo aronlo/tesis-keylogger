@@ -11,13 +11,4 @@ router.get('/', function (req, res) {
 
 })
 
-// GET home page.
-router.get('/test', function (req, res) {
-    res.json({
-        data:  req.useragent,
-        ip_1: req.ip,
-        ip_2: req.connection.remoteAddress
-    })
-})
-
 module.exports = router

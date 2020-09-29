@@ -15,6 +15,15 @@ router.get('/time', (req, res) => {
     })
 })
 
+// GET home page.
+router.get('/ip', function (req, res) {
+    res.json({
+        data:  req.useragent,
+        ip_1: req.ip,
+        ip_2: req.connection.remoteAddress
+    })
+})
+
 router.get('/status', (req, res) => {
     var currentTime = new Date
     // 0: disconnected
