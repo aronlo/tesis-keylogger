@@ -11,6 +11,16 @@ function sign_up() {
     if(isDataOK) send_data()
 }
 
+function parseBool(val)
+{
+    if ((typeof val === 'string' && (val.toLowerCase() === 'true' || val.toLowerCase() === 'yes')) || val === 1)
+        return true;
+    else if ((typeof val === 'string' && (val.toLowerCase() === 'false' || val.toLowerCase() === 'no')) || val === 0)
+        return false;
+
+    return null;
+}
+
 function send_data() {
     var name = $("#etName").val()
     var lastname = $("#etLastname").val()
@@ -21,6 +31,7 @@ function send_data() {
     var genre = $('input[name=rdGenre]:checked', '#signup_form').val()
     var handedness = $('input[name=rdHandedness]:checked', '#signup_form').val()
     var handDesease = $('input[name=rdHandDesease]:checked', '#signup_form').val()
+    var isImposedPassword = parseBool($("#tvisImposedPassword").text())
 
     var url = '/ws/signup'
     var http_request = new XMLHttpRequest()
@@ -46,7 +57,8 @@ function send_data() {
         password: password, 
         genre: genre, 
         handedness: handedness,
-        handDesease: handDesease
+        handDesease: handDesease,
+        isImposedPassword : isImposedPassword
     }
     http_request.setRequestHeader('Content-Type', 'application/json');
     http_request.send(JSON.stringify(payload))

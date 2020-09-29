@@ -9,10 +9,7 @@ var sendEmail = (email, un, pass) => {
     }
   });
 
-  var html
-
-  if (pass != process.env.IMPOSED_PASS) {
-    html =
+  var html =
       `
       <h1>Tesis: Recolección de Patrones de Tecleo</h1>
       <p>Usuario: ${un}</p>
@@ -21,18 +18,6 @@ var sendEmail = (email, un, pass) => {
       <p>Número de contacto: 959291344</p>
       <p>Aron Lo</p>
       `
-  } else {
-    html =
-      `
-      <h1>Tesis: Recolección de Patrones de Tecleo</h1>
-      <h3>Aviso: Fuiste seleccionado aleatoriamente para formar parte del grupo de personas que usarán la contraseña impuesta (${pass}) por el investigador.</h3>
-      <p>Usuario: ${un}</p>
-      <p>Contraseña: ${pass}</p>
-      <p>Te agradezco mucho por participar en las pruebas.</p>
-      <p>Número de contacto: 959291344</p>
-      <p>Aron Lo</p>
-      `
-  }
 
   var mailOptions = {
     from: 'aron.lo.li@hotmail.com',

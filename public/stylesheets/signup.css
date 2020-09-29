@@ -18,3 +18,7 @@ a{
 .paragraph{
     text-align: center;
 }
+
+.hidden{
+    display: none;
+}

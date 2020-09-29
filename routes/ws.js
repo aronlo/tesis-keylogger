@@ -3,7 +3,7 @@ var router = express.Router();
 const User = require('../models/user');
 const Record = require('../models/record');
 var mongoose = require('mongoose');
-var {random_user_assignation} = require('../utils')
+var {random_user_assignation, getClientIp} = require('../utils')
 var {sendEmail} = require('../mailer');
 var moment = require('moment');
 
@@ -20,7 +20,8 @@ router.get('/ip', function (req, res) {
     res.json({
         data:  req.useragent,
         ip_1: req.ip,
-        ip_2: req.connection.remoteAddress
+        ip_2: req.connection.remoteAddress,
+        ip_3: getClientIp(req)
     })
 })
 
@@ -63,12 +64,16 @@ router.post('/login', (req, res) => {
                             date: new Date,
                             sessionIndex: 0,
                             valid: true,
+
                             username: userDoc.username,
                             password: userDoc.password,
                             rawUsernameKeydown: req.body.rawUsernameKeydown,
                             rawUsernameKeyup: req.body.rawUsernameKeyup,
                             rawPasswordKeydown: req.body.rawPasswordKeydown,
                             rawPasswordKeyup: req.body.rawPasswordKeyup,
+
+                            ipAddress: req.connection.remoteAddress,
+                            userAgent: req.useragent.browser + "_" + req.useragent.os
                         })
 
                         new_record.save((err, doc) => {
@@ -90,12 +95,16 @@ router.post('/login', (req, res) => {
                             date: new Date,
                             sessionIndex: lastRecord.sessionIndex + 1,
                             valid: true,
+                            
                             username: userDoc.username,
                             password: userDoc.password,
                             rawUsernameKeydown: req.body.rawUsernameKeydown,
                             rawUsernameKeyup: req.body.rawUsernameKeyup,
                             rawPasswordKeydown: req.body.rawPasswordKeydown,
                             rawPasswordKeyup: req.body.rawPasswordKeyup,
+
+                            ipAddress: req.connection.remoteAddress,
+                            userAgent: req.useragent.browser + "_" + req.useragent.os
                         })
 
                         new_record.save((err, doc) => {
@@ -138,13 +147,14 @@ router.post('/signup', (req, res) => {
                     age: req.body.age,
                     email: req.body.email,
                     username: req.body.username,
-                    password: random_user_assignation() == 'imposed' ? process.env.IMPOSED_PASS : req.body.password,
-                    originalPassword: req.body.password,
+                    password: req.body.password,
+                    isImposedPassword: req.body.isImposedPassword,
                     genre: req.body.genre,
                     handedness: req.body.handedness,
                     handDesease: req.body.handDesease,
+                    
                     date: new Date,
-                    ipAddress: req.body.ip_address,
+                    ipAddress: req.connection.remoteAddress,
                     userAgent: req.useragent.browser + "_" + req.useragent.os
                 })
 

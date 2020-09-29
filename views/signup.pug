@@ -14,6 +14,10 @@ block content
 
     form(class='needs-validation form-signup', id='signup_form', novalidate, autocomplete="off")
     
+        div(class="mb-3 hidden")
+            h5 isImposedPassword?
+            label(id="tvisImposedPassword") #{isImposedPassword}
+
         div(class='mb-3')
             label(for='etName') Nombre
             input(type='text', class='form-control', id='etName' placeholder='Nombre', required)
@@ -42,8 +46,12 @@ block content
 
         div(class='mb-3')
             label(for='etPassword') Contraseña: una simple y que te sea facil de recordar.
-            input(type='text', class='form-control', id='etPassword' placeholder='Contraseña', minlength="6", required)
-            div(class='invalid-feedback') Ingrese una contraseña simple de más de 6 caracteres
+            if password_len
+                input(type='text', class='form-control', id='etPassword' placeholder='Contraseña', ,minlength=password_len ,maxlength= password_len, required)
+                div(class='invalid-feedback') Ingrese una contraseña simple de #{password_len} caracteres
+            else
+                input(type='text', class='form-control', id='etPassword' placeholder='Contraseña', minlength="6", required)
+                div(class='invalid-feedback') Ingrese una contraseña simple de más de 6 caracteres
 
 
         div(class='d-block my-3')
