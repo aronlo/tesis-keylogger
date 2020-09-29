@@ -15,10 +15,7 @@ router.get('/', function (req, res) {
 router.get('/test', function (req, res) {
 
 
-    res.json({
-        ipAddress: req.body.ip_address,
-        userAgent: req.useragent.browser + "_" + req.useragent.os
-    })
+    res.json(req.useragent)
 
 })
 
