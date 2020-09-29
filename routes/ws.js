@@ -3,8 +3,8 @@ var router = express.Router();
 const User = require('../models/user');
 const Record = require('../models/record');
 var mongoose = require('mongoose');
-var Chance = require('chance');
-var nodemailer = require('nodemailer');
+var {random_user_assignation} = require('../utils')
+var {sendEmail} = require('../mailer');
 var moment = require('moment');
 
 router.get('/time', (req, res) => {
@@ -63,7 +63,7 @@ router.post('/login', (req, res) => {
                         })
 
                         new_record.save((err, doc) => {
-                            req.session.user = doc
+                            req.session.user = userDoc
 
                             // This user won't have to log in for a year
                             req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
@@ -90,7 +90,7 @@ router.post('/login', (req, res) => {
                         })
 
                         new_record.save((err, doc) => {
-                            req.session.user = doc
+                            req.session.user = userDoc
 
                             // This user won't have to log in for a year
                             req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
@@ -166,7 +166,6 @@ router.post('/signup', (req, res) => {
 })
 
 
-
 router.post('/upload_records', (req, res) => {
     Record.insertMany(req.body.records, (err, docs) => {
         var response = {}
@@ -176,60 +175,5 @@ router.post('/upload_records', (req, res) => {
     })
 
 })
-
-var sendEmail = (email, un, pass) =>{
-    var transporter = nodemailer.createTransport({
-        service: 'hotmail',
-        auth: {
-          user: 'aron.lo.li@hotmail.com',
-          pass: process.env.EMAIL_PASS
-        }
-      });
-      
-      var html 
-
-      if(pass != process.env.IMPOSED_PASS){
-        html = 
-        `
-        <h1>Tesis: Recolección de Patrones de Tecleo</h1>
-        <p>Usuario: ${un}</p>
-        <p>Contraseña: ${pass}</p>
-        <p>Te agradezco mucho por participar en las pruebas.</p>
-        <p>Número de contacto: 959291344</p>
-        <p>Aron Lo</p>
-        `
-      } else {
-        html = 
-        `
-        <h1>Tesis: Recolección de Patrones de Tecleo</h1>
-        <h3>Aviso: Fuiste seleccionado aleatoriamente para formar parte del grupo de personas que usarán la contraseña impuesta (${pass}) por el investigador.</h3>
-        <p>Usuario: ${un}</p>
-        <p>Contraseña: ${pass}</p>
-        <p>Te agradezco mucho por participar en las pruebas.</p>
-        <p>Número de contacto: 959291344</p>
-        <p>Aron Lo</p>
-        `
-      }
-
-      var mailOptions = {
-        from: 'aron.lo.li@hotmail.com',
-        to: email,
-        subject: '¡Cuenta registrada existosamente!',
-        html: html
-      };
-      
-      transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-          console.log(error);
-        } else {
-          console.log('Email sent: ' + info.response);
-        }
-      });
-}
-
-var random_user_assignation = () => {
-    var chance = new Chance();
-    return chance.weighted(['imposed', 'personal'], [7, 3])
-}
 
 module.exports = router

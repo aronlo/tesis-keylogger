@@ -11,19 +11,24 @@ block content
     div(class='paragraph')
 
       h5 Bienvenido #{genuine_user.name}
-      p(class="paragraph-justify") Ahora tendrás que hacerte pasar por un usuario impostor e ingresar las credenciales del siguiente usuario. NO lo uses para iniciar sesión en la pantalla inicial.
+
+      p(class="paragraph-justify") #{subtitle} Ahora tendrás que hacerte pasar por un usuario impostor e ingresar las credenciales del siguiente usuario. NO lo uses para iniciar sesión en la pantalla inicial.
 
     hr(class="paragraph-justify")
 
     div(class="form-impostor")
 
+      div(class="form-group hidden")
+        h5 Id de Usuario
+        label(id="tvImpostorUserId") #{impostor_user._id}
+
       div(class="form-group")
         h5 Usuario
-        label(id="tvUsername") #{impostor_user.username}
+        label(id="tvImpostorUsername") #{impostor_user.username}
 
       div(class="form-group")
         h5 Contraseña
-        label(id="tvUsername") #{impostor_user.password}
+        label(id="tvImpostorPassword") #{impostor_user.password}
 
       div(class="form-group")
         h5 # Captura válidas recolectadas:

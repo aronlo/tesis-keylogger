@@ -89,7 +89,7 @@ function send_data(){
             var response = JSON.parse(http_request.response);
             if (response.status == 1) {
                 alert("Usuario logeado correctamente")
-                window.location.href = '/impostor';
+                window.location.href = '/impostor1';
             } else {
                 alert("Hubo un error al iniciar sesión: " + response.error)
                 resetUsernameLog()

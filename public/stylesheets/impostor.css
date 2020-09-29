@@ -16,3 +16,15 @@
     max-width: 650px;
     margin: auto;
 }
+
+.hidden{
+    display: none;
+}
+
+.visible{
+    display: inline;
+}
+
+.inline {
+    display: inline;
+}
