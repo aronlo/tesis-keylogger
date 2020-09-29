@@ -13,10 +13,10 @@ router.get('/', function (req, res) {
 
 // GET home page.
 router.get('/test', function (req, res) {
-
-
-    res.json(req.useragent)
-
+    res.json({
+        data:  req.useragent,
+        ip: req.ip
+    })
 })
 
 module.exports = router
