@@ -6,6 +6,7 @@ var rawPasswordKeyup
 
 var baseTime =  new Big(performance.timing.navigationStart)
 
+
 function resetUsernameLog() {
     rawUsernameKeydown = []
     rawUsernameKeyup = []
@@ -18,7 +19,8 @@ function resetPasswordLog() {
     $("#etPassword").val("")
 }
 
-function isKeyCodeAllow(event) {
+function usernameKeylog(event) {
+
     if (event.keyCode == 9 || //ignore tab
         event.keyCode == 13 || //Enter
         event.keyCode == 16 || //shiftleft
@@ -29,10 +31,58 @@ function isKeyCodeAllow(event) {
         event.keyCode == 38 ||
         event.keyCode == 39 ||
         event.keyCode == 40 ||
-        event.keyCode == 91) {
-        return true
-    } else {
-        return false
+        event.keyCode == 91) return 
+    
+
+    if ('keydown' == event.type) {
+        rawUsernameKeydown.push({
+            keyCode: event.keyCode,
+            name: event.code,
+            timeStamp: baseTime.plus(performance.now()).toString()
+        })
+    } else if ('keyup' == event.type) {
+        rawUsernameKeyup.push({
+            keyCode: event.keyCode,
+            name: event.code,
+            timeStamp: baseTime.plus(performance.now()).toString()
+        })
+        //BackSpace
+        if (event.keyCode == 8) {
+            resetUsernameLog()
+        }
+    }
+}
+
+function passwordKeylog(event) {
+
+    if (event.keyCode == 9 || //ignore tab
+        event.keyCode == 13 || //Enter
+        event.keyCode == 16 || //shiftleft
+        event.keyCode == 17 || //controlLeft
+        event.keyCode == 18 || //altLeft
+        event.keyCode == 20 || //capslock
+        event.keyCode == 37 ||
+        event.keyCode == 38 ||
+        event.keyCode == 39 ||
+        event.keyCode == 40 ||
+        event.keyCode == 91) return 
+
+    if ('keydown' == event.type) {
+        rawPasswordKeydown.push({
+            keyCode: event.keyCode,
+            name: event.code,
+            timeStamp: baseTime.plus(performance.now()).toString()
+        })
+    } else if ('keyup' == event.type) {
+        rawPasswordKeyup.push({
+            keyCode: event.keyCode,
+            name: event.code,
+            timeStamp: baseTime.plus(performance.now()).toString()
+        })
+        //BackSpace
+        if (event.keyCode == 8) {
+            resetPasswordLog()
+        }
     }
 }
 
@@ -92,51 +142,6 @@ window.onload = function () {
     rawUsernameKeyup = []
     rawPasswordKeydown = []
     rawPasswordKeyup = []
-
-    $("#etUsername").keydown(event => {
-        if (isKeyCodeAllow(event)) return
-        rawUsernameKeydown.push({
-            keyCode: event.keyCode,
-            name: event.code,
-            timeStamp: baseTime.plus(performance.now()).toString()
-        })
-    })
-
-    $("#etUsername").keyup(event => {
-        if (isKeyCodeAllow(event)) return
-        rawUsernameKeyup.push({
-            keyCode: event.keyCode,
-            name: event.code,
-            timeStamp: baseTime.plus(performance.now()).toString()
-        })
-        //BackSpace
-        if (event.keyCode == 8) {
-            resetUsernameLog()
-        }
-    })
-
-    $("#etPassword").keydown(event => {
-        if (isKeyCodeAllow(event)) return
-        rawPasswordKeydown.push({
-            keyCode: event.keyCode,
-            name: event.code,
-            timeStamp: baseTime.plus(performance.now()).toString()
-        })
-    })
-
-
-    $("#etPassword").keyup(event => {
-        if (isKeyCodeAllow(event)) return
-        rawPasswordKeyup.push({
-            keyCode: event.keyCode,
-            name: event.code,
-            timeStamp: baseTime.plus(performance.now()).toString()
-        })
-        //BackSpace
-        if (event.keyCode == 8) {
-            resetPasswordLog()
-        }
-    })
 
     $("#etUsername").focusin(() => {
         resetUsernameLog()

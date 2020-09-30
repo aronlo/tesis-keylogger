@@ -1,4 +1,3 @@
-$("#tvImpostorUserId").toggleClass("hidden");
 
 
 function send(){
@@ -9,3 +8,4 @@ function send(){
 window.onload = () =>  {
     
 }
+

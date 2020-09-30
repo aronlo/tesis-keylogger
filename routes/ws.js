@@ -3,8 +3,8 @@ var router = express.Router();
 const User = require('../models/user');
 const Record = require('../models/record');
 var mongoose = require('mongoose');
-var {random_user_assignation, getClientIp} = require('../utils')
-var {sendEmail} = require('../mailer');
+var { getClientIp } = require('../utils')
+var { sendEmail } = require('../mailer');
 var moment = require('moment');
 
 router.get('/time', (req, res) => {
@@ -15,7 +15,6 @@ router.get('/time', (req, res) => {
     })
 })
 
-// GET home page.
 router.get('/ip', function (req, res) {
     res.json({
         data:  req.useragent,
@@ -25,8 +24,26 @@ router.get('/ip', function (req, res) {
     })
 })
 
+router.get('/getcookies', function (req, res) {
+    res.json(req.cookies)
+})
+
+router.get('/getcookie/:cookie', function (req, res) {
+    res.json(req.cookies[req.params.cookie])
+})
+
+router.get('/setcookie/:cookie/:value', function (req, res) {
+    res.cookie(req.params.cookie, req.params.value)
+    res.json({status: 1})
+})
+
+router.get('/clearcookie/:cookie', function (req, res) {
+    res.clearCookie(req.params.cookie)
+    res.json({status: 1})
+})
+
+
 router.get('/status', (req, res) => {
-    var currentTime = new Date
     // 0: disconnected
     // 1: connected
     // 2: connecting
@@ -37,6 +54,7 @@ router.get('/status', (req, res) => {
 })
 
 router.post('/login', (req, res) => {
+
     User.findOne({
         username: req.body.username,
         password: req.body.password
@@ -44,88 +62,98 @@ router.post('/login', (req, res) => {
         .exec((err, userDoc) => {
             var response = {}
             if (userDoc == null) {
-                response.status = 0
-                response.error = "No se encontró ningun usuario con los datos enviados en la base de datos. Revisa tu correo para ver las credenciales."
-                res.json(response)
+                if (req.cookies.token) {
+                    var userId = req.cookies.token.split("_")[0]
+                    var new_record = new Record({
+                        belongedUserId: userId,
+                        performedUserId: userId,
+                        date: new Date,
+                        sessionIndex: -1,
+                        valid: false,
+
+                        username: req.body.username,
+                        password: req.body.password,
+                        rawUsernameKeydown: req.body.rawUsernameKeydown,
+                        rawUsernameKeyup: req.body.rawUsernameKeyup,
+                        rawPasswordKeydown: req.body.rawPasswordKeydown,
+                        rawPasswordKeyup: req.body.rawPasswordKeyup,
+
+                        ipAddress: getClientIp(req),
+                        userAgent: req.useragent.browser + "_" + req.useragent.os,
+                        token: req.cookies.token
+                    })
+
+                    new_record.save((err, doc) => {
+                        response.status = 0
+                        response.error = "No se encontró ningun usuario con los datos enviados en la base de datos. Revisa tu correo para ver las credenciales."
+                        res.json(response)
+                    })
+                } else {
+                    response.status = 0
+                    response.error = "No se encontró ningun usuario con los datos enviados en la base de datos. Revisa tu correo para ver las credenciales."
+                    res.json(response)
+                }
             } else {
                 //Check if already exist records
                 Record.find({
                     belongedUserId: userDoc._id,
                     performedUserId: userDoc._id,
+                    valid: true,
                     date: {
                         $gte: moment().startOf('day').toDate(),
                         $lte: moment().endOf('day').toDate()
                     }
                 }).exec((err, recordDocs) => {
+
+                    var sessionIndex
                     if (recordDocs.length == 0) {
-                        var new_record = new Record({
-                            belongedUserId: userDoc._id,
-                            performedUserId: userDoc._id,
-                            date: new Date,
-                            sessionIndex: 0,
-                            valid: true,
-
-                            username: userDoc.username,
-                            password: userDoc.password,
-                            rawUsernameKeydown: req.body.rawUsernameKeydown,
-                            rawUsernameKeyup: req.body.rawUsernameKeyup,
-                            rawPasswordKeydown: req.body.rawPasswordKeydown,
-                            rawPasswordKeyup: req.body.rawPasswordKeyup,
-
-                            ipAddress: req.connection.remoteAddress,
-                            userAgent: req.useragent.browser + "_" + req.useragent.os
-                        })
-
-                        new_record.save((err, doc) => {
-                            req.session.user = userDoc
-
-                            // This user won't have to log in for a year
-                            req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
-
-                            response.status = 1
-                            response.data = userDoc
-                            res.json(response)
-                        })
-
-                    } else if ( recordDocs.length < 3) {
+                        sessionIndex = 0
+                    } else if (recordDocs.length < 3) {
                         var lastRecord = recordDocs.slice(-1)[0]
-                        var new_record = new Record({
-                            belongedUserId: userDoc._id,
-                            performedUserId: userDoc._id,
-                            date: new Date,
-                            sessionIndex: lastRecord.sessionIndex + 1,
-                            valid: true,
-                            
-                            username: userDoc.username,
-                            password: userDoc.password,
-                            rawUsernameKeydown: req.body.rawUsernameKeydown,
-                            rawUsernameKeyup: req.body.rawUsernameKeyup,
-                            rawPasswordKeydown: req.body.rawPasswordKeydown,
-                            rawPasswordKeyup: req.body.rawPasswordKeyup,
+                        sessionIndex = lastRecord.sessionIndex + 1
+                    }
 
-                            ipAddress: req.connection.remoteAddress,
-                            userAgent: req.useragent.browser + "_" + req.useragent.os
-                        })
-
-                        new_record.save((err, doc) => {
-                            req.session.user = userDoc
-
-                            // This user won't have to log in for a year
-                            req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
-
-                            response.status = 1
-                            response.data = userDoc
-                            res.json(response)
-                        })
-                    } else {
+                    if (recordDocs.length >= 3) {
                         response.status = 0
                         response.error = "Se alcanzó el maximo de intentos permitidos por día."
                         res.json(response)
+                    } else {
+
+                        var tempToken = req.cookies.token ? req.cookies.token : userDoc._id + "_" + Date.now()
+                        if (!req.cookies.token) res.cookie('token', tempToken)
+
+                        var new_record = new Record({
+                            belongedUserId: userDoc._id,
+                            performedUserId: userDoc._id,
+                            date: new Date,
+                            sessionIndex: sessionIndex,
+                            valid: true,
+
+                            username: userDoc.username,
+                            password: userDoc.password,
+                            rawUsernameKeydown: req.body.rawUsernameKeydown,
+                            rawUsernameKeyup: req.body.rawUsernameKeyup,
+                            rawPasswordKeydown: req.body.rawPasswordKeydown,
+                            rawPasswordKeyup: req.body.rawPasswordKeyup,
+
+                            ipAddress: getClientIp(req),
+                            userAgent: req.useragent.browser + "_" + req.useragent.os,
+                            token: tempToken
+                        })
+
+                        new_record.save((err, doc) => {
+                            req.session.user = userDoc
+
+                            // This user won't have to log in for a year
+                            req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
+
+                            response.status = 1
+                            response.data = userDoc
+                            res.json(response)
+                        })
                     }
                 })
-
             }
-
         })
 })
 
@@ -140,7 +168,6 @@ router.post('/signup', (req, res) => {
             username: req.body.username
         }).exec((err, userDoc) => {
             if (userDoc == null) {
-
                 var new_user = new User({
                     name: req.body.name,
                     lastname: req.body.lastname,
@@ -154,7 +181,7 @@ router.post('/signup', (req, res) => {
                     handDesease: req.body.handDesease,
                     
                     date: new Date,
-                    ipAddress: req.connection.remoteAddress,
+                    ipAddress: getClientIp(req),
                     userAgent: req.useragent.browser + "_" + req.useragent.os
                 })
 
@@ -172,6 +199,7 @@ router.post('/signup', (req, res) => {
                             doc.username,
                             doc.password)
                     }
+                    res.cookie('token', doc._id + "_"+ doc.date.getTime())
                     res.json(response)
                 })
             } else {

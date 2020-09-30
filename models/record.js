@@ -7,7 +7,7 @@ var RecordSchema = new Schema({
     belongedUserId: { type: Schema.Types.ObjectId },
     performedUserId: { type: Schema.Types.ObjectId },
     date: { type: Date, default: Date.now },
-    sessionIndex: { type: Number},
+    sessionIndex: { type: Number },
     valid: { type: Boolean },
 
     username: { type: String },
@@ -18,7 +18,8 @@ var RecordSchema = new Schema({
     rawPasswordKeyup: { type: [KeystrokeSchema] },
 
     ipAddress: { type: String },
-    userAgent: { type: String }
+    userAgent: { type: String },
+    token: { type: String }
 })
 
 // Export model.

@@ -9,12 +9,12 @@ var UserSchema = new Schema({
     email: { type: String },
     username: { type: String },
     password: { type: String },
-    imposedPasswordLen: { type: Boolean },
+    isImposedPassword: { type: Boolean },
     genre: { type: String },
     handedness: { type: String },
     handDesease: { type: String },
     date: { type: Date, default: Date.now },
-    
+
     ipAddress: { type: String },
     userAgent: { type: String }
 })
