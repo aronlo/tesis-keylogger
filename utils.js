@@ -21,7 +21,7 @@ var lcm = function (a, b) {
 }
 
 function lcm_of_array(input_array) {
-    return input_array.reduce(lcm)
+  return input_array.filter(el => el != 0).reduce(lcm)
 }
 
 

@@ -11,7 +11,7 @@ function getUserIds() {
     })
 }
 
-function getUsersRecordsCount() {
+function getUserImpostorRecordsCount() {
     return new Promise(resolve => {
         const o = {};
         o.map = function () { emit(this.belongedUserId, { belongedUserId: this.belongedUserId, performedUserId: this.performedUserId }) };
@@ -28,5 +28,5 @@ function getUsersRecordsCount() {
 
 }
 
-exports.getUsersRecordsCount = getUsersRecordsCount
+exports.getUserImpostorRecordsCount = getUserImpostorRecordsCount
 exports.getUserIds = getUserIds
