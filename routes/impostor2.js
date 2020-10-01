@@ -12,9 +12,9 @@ router.get('/', async (req, res) => {
     } else {
         var genuine_user = req.session.user
 
-        var count = await Record.countDocuments({ valid: { $ne: genuine_user._id } })
+        var count = await User.countDocuments({ _id: { $ne: genuine_user._id } })
         if(count == 0 ){
-            res.redirect('/')
+            res.redirect('/gratefulness')
             return
         }
 
