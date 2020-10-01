@@ -46,6 +46,8 @@ async function getRandomUser() {
 
     var result = (await getUserImpostorRecordsCount()).results
 
+    console.log(result)
+
     userIds.forEach(user => {
         var val = result.find(el => el._id.toString() == user._id.toString())
         console.log(val)
