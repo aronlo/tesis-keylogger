@@ -63,3 +63,14 @@ function send_data() {
     http_request.setRequestHeader('Content-Type', 'application/json');
     http_request.send(JSON.stringify(payload))
 }
+
+window.onload = () => {
+
+    $("#cbConsent").change(function() {
+        if(this.checked) {
+            $("#btnSubmit").prop('disabled', false)
+        }else{
+            $("#btnSubmit").prop('disabled', true)
+        }
+    });
+}

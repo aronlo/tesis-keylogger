@@ -22,3 +22,7 @@ a{
 .hidden{
     display: none;
 }
+
+.spacing-top{
+    margin-top: 20px;
+}

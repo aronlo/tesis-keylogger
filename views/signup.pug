@@ -95,10 +95,16 @@ block content
                 label(for='yes_illness', class='custom-control-label') Si
             div(class='invalid-feedback') Seleccione una opción
             
+            div(class="form-group form-check spacing-top")
+                input(type="checkbox", class="form-check-input", id="cbConsent")
+                label(for="cbConsent",class="form-check-label") Doy consentimiento de haber leído los <a href="https://docs.google.com/document/d/1DcxA9IjDIwYiLi9qR2Y_fCaGsd7_Kx6Zsq2xlBKE6DM/edit?usp=sharing" target="_blank">Términos y Condiciones</a>
 
+                p Descargar el <a href="https://docs.google.com/document/d/1KRUzQ3awPRYSJgkOeOqamFKXvKiH1JSgu6VfpZ0doMM/edit?usp=sharing", target="_blank">Documento de Consentimiento</a> y enviarlo a: <a href="mailto:aron.lo.li@hotmail.com?subject=Envio de Documento de Consentimiento">aron.lo.li@hotmail.com</a>   
+                
+            
+            
 
-
-    button(class='btn btn-lg btn-primary btn-block', id='btnSubmit', onclick='sign_up()') Crear cuenta
+    button(class='btn btn-lg btn-primary btn-block', id='btnSubmit', onclick='sign_up()', disabled) Crear cuenta
 
     hr
 
