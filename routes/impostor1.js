@@ -37,6 +37,13 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.get('/test',  (req, res) => {
+
+    var a = await (getUserImpostorRecordsCount())
+    res.json(a)
+
+})
+
 async function getRandomUser() {
 
     var userList = []
