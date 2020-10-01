@@ -6,28 +6,28 @@ const User = require('../models/user');
 
 
 router.get('/', async (req, res) => {
-    var genuine_user = req.session.user
-    var randomUserId = await getRandomUser()
+    if (!req.session.user) {
+        res.redirect('/')
+    } else {
+        var genuine_user = req.session.user
+        var randomUserId
+        do {
+            randomUserId = await getRandomUser()
+        } while (genuine_user._id == randomUserId)
 
-    User.findById(randomUserId).exec((err, impostor_user) => {
-        if (genuine_user && impostor_user) {
-            res.render('impostor', {
-                subtitle: 'Tarea 2:',
-                genuine_user: genuine_user,
-                impostor_user: impostor_user
-            })
-        } else {
-            res.redirect('/')
-        }
-    })
+        User.findById(randomUserId).exec((err, impostor_user) => {
+            if (genuine_user && impostor_user) {
+                res.render('impostor', {
+                    subtitle: 'Tarea 2:',
+                    genuine_user: genuine_user,
+                    impostor_user: impostor_user
+                })
+            } else {
+                res.redirect('/')
+            }
+        })
+    }
 })
-
-
-router.get('/test', async (req, res) => {
-    var temp = await getRandomUser()
-    res.send(temp)
-})
-
 
 async function getRandomUser() {
 
@@ -50,12 +50,6 @@ async function getRandomUser() {
         if (x == 0) return lcm_value
         return lcm_value / x
     })
-
-
-    console.log(userList)
-    console.log(weightList);
-    console.log(lcm_value)
-    console.log(inverseWeightList);
 
     return random_user_of_array(userList, inverseWeightList)
 }
