@@ -37,7 +37,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/test',  (req, res) => {
+router.get('/test', async (req, res) => {
 
     var a = await (getUserImpostorRecordsCount())
     res.json(a)
