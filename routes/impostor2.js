@@ -11,6 +11,13 @@ router.get('/', async (req, res) => {
         res.redirect('/')
     } else {
         var genuine_user = req.session.user
+
+        var count = await Record.countDocuments({ valid: { $ne: genuine_user._id } })
+        if(count == 0 ){
+            res.redirect('/')
+            return
+        }
+
         var randomUserId
         do {
             randomUserId = await getRandomUser()

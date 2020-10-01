@@ -3,6 +3,7 @@ var router = express.Router();
 var { lcm, random_user_of_array } = require('../utils')
 var { getUserImpostorRecordsCount, getUserIds } = require('../querys');
 const User = require('../models/user');
+const Record = require('../models/record');
 
 
 router.get('/', async (req, res) => {
@@ -11,6 +12,13 @@ router.get('/', async (req, res) => {
         res.redirect('/')
     } else {
         var genuine_user = req.session.user
+
+        var count = await Record.countDocuments({ valid: { $ne: genuine_user._id } })
+        if(count == 0 ){
+            res.redirect('/')
+            return
+        }
+
         var randomUserId
         do {
             randomUserId = await getRandomUser()
