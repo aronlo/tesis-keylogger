@@ -17,11 +17,8 @@ function getUserImpostorRecordsCount() {
         o.map = function () { emit(this.belongedUserId, { belongedUserId: this.belongedUserId, performedUserId: this.performedUserId }) };
         o.reduce = function (k, vals) {
             var new_vals = vals.filter(function (record) {
-                
                 return record.belongedUserId.toString() != record.performedUserId.toString()
             })
-            console.log(record)
-            console.log(new_vals);
             return new_vals.length
         };
         Record.mapReduce(o, function (err, results) {

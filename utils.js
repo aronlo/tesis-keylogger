@@ -8,8 +8,6 @@ var random_user_assignation = () => {
 
 var random_user_of_array = (usersList, weightList) => {
     var chance = new Chance();
-    console.log(usersList)
-    console.log(weightList)
     return chance.weighted(usersList, weightList)
 }
 
