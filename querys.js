@@ -22,11 +22,30 @@ function getUserImpostorRecordsCount() {
             return new_vals.length
         };
         Record.mapReduce(o, function (err, results) {
-            return resolve(results)
+            resolve(results)
         })
     })
-
 }
 
+function getUserImpostorRecordsCountJs() {
+    return new Promise(async resolve => {
+        var results = []
+        var records = await Record.find()
+        records.forEach(e1 => {
+            if (e1.belongedUserId.toString() != e1.performedUserId.toString()) {
+                if (results.findIndex(e2 => e2._id.toString() == e1.belongedUserId.toString()) == -1) {
+                    results.push({ _id: e1.belongedUserId, value: 0 })
+                }
+                var idx = results.findIndex(e3 => e3._id.toString() == e1.belongedUserId.toString())
+                results[idx].value = results[idx].value + 1
+            }
+        })
+        var data = { results: results }
+        resolve(data)
+    })
+}
+
+
 exports.getUserImpostorRecordsCount = getUserImpostorRecordsCount
+exports.getUserImpostorRecordsCountJs = getUserImpostorRecordsCountJs
 exports.getUserIds = getUserIds

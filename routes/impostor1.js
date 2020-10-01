@@ -5,8 +5,7 @@ var { getUserImpostorRecordsCount, getUserIds } = require('../querys');
 const User = require('../models/user');
 
 
-// GET home page.
-router.get('/', async (req, res) =>  {
+router.get('/', async (req, res) => {
     var genuine_user = req.session.user
     var randomUserId = await getRandomUser()
 
@@ -52,8 +51,10 @@ async function getRandomUser() {
         return lcm_value / x
     })
 
+
     console.log(userList)
     console.log(weightList);
+    console.log(lcm_value)
     console.log(inverseWeightList);
 
     return random_user_of_array(userList, inverseWeightList)
