@@ -113,6 +113,8 @@ router.post('/login', (req, res) => {
                         sessionIndex = lastRecord.sessionIndex + 1
                     }
 
+                    req.session.sessionIndex = sessionIndex
+
                     if (recordDocs.length >= 3) {
                         response.status = 0
                         response.error = "Se alcanzó el maximo de intentos permitidos por día."
@@ -214,11 +216,58 @@ router.post('/signup', (req, res) => {
 
 
 router.post('/upload_records', (req, res) => {
-    Record.insertMany(req.body.records, (err, docs) => {
-        var response = {}
-        response.status = err ?  0 : 1 
-        console.log(docs)
-        res.json(response)
+
+    var tempToken = req.cookies.token ? req.cookies.token : userDoc._id + "_" + Date.now()
+    if (!req.cookies.token) res.cookie('token', tempToken)
+
+    var performedUser = req.session.user
+    var payload = req.body
+    var records = []
+
+    payload.validRecords.forEach(e => {
+        e.belongedUserId = payload.belongedUserId
+        e.performedUserId = performedUser._id
+        e.date = new Date
+        e.sessionIndex = req.session.sessionIndex,
+        e.valid = true
+
+        e.username = payload.username
+        e.password = payload.password
+
+        e.ipAddress= getClientIp(req)
+        e.userAgent =  req.useragent.browser + "_" + req.useragent.os
+        e.token = tempToken
+        records.push(e)
+    })
+
+    payload.invalidRecords.forEach(e => {
+        e.belongedUserId = payload.belongedUserId
+        e.performedUserId = performedUser._id
+        e.date = new Date
+        e.sessionIndex = req.session.sessionIndex,
+        e.valid = false
+
+        e.username = payload.username
+        e.password = payload.password
+
+        e.ipAddress= getClientIp(req)
+        e.userAgent =  req.useragent.browser + "_" + req.useragent.os
+        e.token = tempToken
+        records.push(e)
+    })
+
+    var response = {}
+
+    Record.insertMany(records, (err, docs) => {
+        if (docs != null) {
+            response.status = 0
+            response.error = "Error en el mongo server. Contactarse al 959291344."
+            res.json(response)
+        } else {
+            response.status = 1
+            response.data = docs
+            res.json(response)
+        }
     })
 
 })
