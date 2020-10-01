@@ -3,7 +3,6 @@ var router = express.Router();
 var { lcm, random_user_of_array } = require('../utils')
 var { getUserImpostorRecordsCount, getUserIds } = require('../querys');
 const User = require('../models/user');
-const Record = require('../models/record');
 
 
 router.get('/', async (req, res) => {
@@ -49,6 +48,7 @@ async function getRandomUser() {
 
     userIds.forEach(user => {
         var val = result.find(el => el._id.toString() == user._id.toString())
+        console.log(val)
         userList.push(user._id)
         weightList.push(val ? val.value : 0)
     });
