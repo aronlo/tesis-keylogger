@@ -6,6 +6,12 @@ const User = require('../models/user');
 
 
 router.get('/', async (req, res) => {
+
+    if(req.useragent.isMobile) {
+        res.render('mobile')
+        return
+    }
+
     if (!req.session.user) {
         res.redirect('/')
     } else {
