@@ -66,6 +66,14 @@ function push_invalid_record() {
 }
 
 function push_valid_record() {
+
+    if(
+        rawUsernameKeydown.length != impostorUsername.length ||
+        rawUsernameKeyup.length != impostorUsername.length || 
+        rawPasswordKeydown.length != impostorPassword.length || 
+        rawPasswordKeyup.length != impostorPassword.length
+    ) return
+
     payload.validRecords.push({
         rawUsernameKeydown: rawUsernameKeydown,
         rawUsernameKeyup: rawUsernameKeyup,

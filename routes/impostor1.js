@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var { lcm, random_user_of_array } = require('../utils')
-var { getUserImpostorRecordsCount, getUserIds } = require('../querys');
+var { getUserIds, getUserImpostorRecordsCountJs } = require('../querys');
 const User = require('../models/user');
 
 
@@ -49,7 +49,7 @@ async function getRandomUser() {
 
     var userIds = await getUserIds()
 
-    var result = (await getUserImpostorRecordsCount()).results
+    var result = (await getUserImpostorRecordsCountJs()).results
 
     userIds.forEach(user => {
         var val = result.find(el => el._id.toString() == user._id.toString())
