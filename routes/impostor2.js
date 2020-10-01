@@ -6,33 +6,38 @@ const User = require('../models/user');
 
 
 router.get('/', async (req, res) => {
+    try {
+        if (!req.session.user) {
+            res.redirect('/')
+        } else {
+            var genuine_user = req.session.user
 
-    if (!req.session.user) {
-        res.redirect('/')
-    } else {
-        var genuine_user = req.session.user
-
-        var count = await User.countDocuments({ _id: { $ne: genuine_user._id } })
-        if(count == 0 ){
-            res.redirect('/gratefulness')
-            return
-        }
-
-        var randomUserId
-        do {
-            randomUserId = await getRandomUser()
-        } while (genuine_user._id == randomUserId)
-
-        User.findById(randomUserId).exec((err, impostor_user) => {
-            if (genuine_user && impostor_user) {
-                res.render('impostor2', {
-                    subtitle: 'Tarea 3:',
-                    genuine_user: genuine_user,
-                    impostor_user: impostor_user
-                })
-            } else {
-                res.redirect('/')
+            var count = await User.countDocuments({ _id: { $ne: genuine_user._id } })
+            if (count == 0) {
+                res.redirect('/gratefulness')
+                return
             }
+
+            var randomUserId
+            do {
+                randomUserId = await getRandomUser()
+            } while (genuine_user._id == randomUserId)
+
+            User.findById(randomUserId).exec((err, impostor_user) => {
+                if (genuine_user && impostor_user) {
+                    res.render('impostor2', {
+                        subtitle: 'Tarea 3:',
+                        genuine_user: genuine_user,
+                        impostor_user: impostor_user
+                    })
+                } else {
+                    res.redirect('/')
+                }
+            })
+        }
+    } catch (e) {
+        res.render("error", {
+            error: e
         })
     }
 })

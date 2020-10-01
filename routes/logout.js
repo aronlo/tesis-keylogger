@@ -15,4 +15,12 @@ router.get('/', function(req, res) {
     })
 })
 
+router.get('/error', function(req, res) {
+
+    req.session.destroy((err) => {
+        if(err) console.log(err)
+        res.redirect('/')
+    })
+})
+
 module.exports = router
