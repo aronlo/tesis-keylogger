@@ -9,3 +9,9 @@ button, a, hr {
     margin: auto;
     margin-top: 20px;
 }
+
+.footer {
+    margin: auto;
+    margin-top: 40px;
+    max-width: 330px;
+}

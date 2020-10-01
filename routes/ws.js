@@ -259,7 +259,7 @@ router.post('/upload_records', (req, res) => {
     var response = {}
 
     Record.insertMany(records, (err, docs) => {
-        if (docs != null) {
+        if (docs == null) {
             response.status = 0
             response.error = "Error en el mongo server. Contactarse al 959291344."
             res.json(response)
