@@ -1,0 +1,66 @@
+extends layout
+
+block css
+  link(rel="stylesheet", href="/stylesheets/impostor.css")
+
+block scripts
+  script(src='https://cdn.jsdelivr.net/npm/big.js@6.0.0/big.min.js')
+  script(src='/js/impostor2.js')
+
+block content
+
+    div(class='paragraph')
+
+        p(class="paragraph-justify") #{subtitle} Asi como lo hiciste antes, ahora tendrás que hacerte pasar por otro usuario impostor e ingresar las credenciales del siguiente usuario. NO lo uses para iniciar sesión en la pantalla inicial.
+
+    hr(class="paragraph-justify")
+
+    div(class="form-impostor")
+
+        div(class="form-group hidden")
+            h5 Id de Usuario
+            label(id="tvImpostorUserId") #{impostor_user._id}
+
+        div(class="form-group")
+            h5 Usuario
+            label(id="tvImpostorUsername") #{impostor_user.username}
+
+        div(class="form-group")
+            h5 Contraseña
+            label(id="tvImpostorPassword") #{impostor_user.password}
+
+        div(class="form-group")
+            h5 # Captura válidas recolectadas:
+            label(id="tvAttempt") 0
+
+            div(class="progress")
+                div(class="progress-bar", role="progressbar", id="progressbar", aria-valuenow="0", aria-valuemin="0", aria-valuemax="100")
+
+        hr(class="paragraph-justify")
+
+        form(class='needs-validation', novalidate, autocomplete="off")
+            div(class="form-group")
+
+            div(class='mb-3')
+                label(for='etUsername', class='sr-only') Nombre de Usuario
+                input(type='text', id='etUsername', class='form-control', placeholder='Nombre de Usuario', required)
+                div(class='invalid-feedback') Ingrese el nombre de usuario.
+
+
+            div(class='mb-3')
+                label(for='etPassword', class='sr-only') Contraseña
+                input(type='password', id='etPassword', class='form-control', placeholder='Contraseña', required) 
+                div(class='invalid-feedback') Ingrese la constraseña.
+            
+
+        div(class="form-group" id="divValidate")
+            div(class="form-group", )
+            button(type="button", id="btnValidate", class="btn btn-lg btn-primary btn-block", onclick="validateCredentials()") Iniciar Sesión
+
+        div(class="form-group hidden" id="divSend")
+            div(class="form-group")
+            button(type="button", id="btnSend", class="btn btn-lg btn-success btn-block", onclick="send_data()") Guardar muestra
+
+        div(class="form-group hidden" id="divLogout")
+            div(class="form-group")
+            button(type="button", id="btnLogout", class="btn btn-lg btn-danger btn-block", onclick="logout()") Cerrar Sesión

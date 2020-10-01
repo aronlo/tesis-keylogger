@@ -1,10 +1,21 @@
 //Global variables
-var rawUsernameKeydown 
-var rawUsernameKeyup 
-var rawPasswordKeydown 
-var rawPasswordKeyup
 
-var baseTime =  new Big(performance.timing.navigationStart)
+var payload = {}
+
+payload.validRecords = []
+payload.invalidRecords = []
+
+var rawUsernameKeydown = []
+var rawUsernameKeyup = []
+var rawPasswordKeydown = []
+var rawPasswordKeyup = []
+
+const baseTime = new Big(performance.timing.navigationStart)
+
+const maxAttempts = 3
+
+var impostorUsername
+var impostorPassword
 
 function resetUsernameLog() {
     rawUsernameKeydown = []
@@ -37,7 +48,59 @@ function isKeyCodeAllow(event) {
 }
 
 
-function login() {
+function isPasswordCorrect() {
+    return impostorPassword == $("#etPassword").val()
+}
+
+function isUsernameCorrect() {
+    return impostorUsername == $("#etUsername").val()
+}
+
+function push_invalid_record() {
+    payload.invalidRecords.push({
+        rawUsernameKeydown: rawUsernameKeydown,
+        rawUsernameKeyup: rawUsernameKeyup,
+        rawPasswordKeydown: rawPasswordKeydown,
+        rawPasswordKeyup: rawPasswordKeyup
+    })
+}
+
+function push_valid_record() {
+    payload.validRecords.push({
+        rawUsernameKeydown: rawUsernameKeydown,
+        rawUsernameKeyup: rawUsernameKeyup,
+        rawPasswordKeydown: rawPasswordKeydown,
+        rawPasswordKeyup: rawPasswordKeyup
+    })
+
+    $("#tvAttempt").text(payload.validRecords.length.toString())
+
+    var progressbar_value = (payload.validRecords.length / maxAttempts) * 100
+    progressbar.style.width = progressbar_value + "%";
+    progressbar.setAttribute("aria-valuenow", progressbar_value);
+    progressbar.innerHTML = Math.round(progressbar_value) + "%"
+}
+
+function prepareToSend() {
+    $("#divValidate").hide()
+    $("#divSend").removeClass("hidden")
+    $('#etUsername').prop('readonly', true);
+    $('#etPassword').prop('readonly', true);
+    $("#btnSend").focus()
+}
+
+function prepareToLogout(){
+    $("#divValidate").hide()
+    $("#divSend").hide()
+    $("#divLogout").removeClass("hidden")
+    $("#btnLogout").focus()
+}
+
+function logout(){
+    window.location.href = '/logout';
+}
+
+function validateCredentials() {
     var isDataOK = true
     var forms = document.getElementsByClassName('needs-validation')
     Array.prototype.filter.call(forms, function (form) {
@@ -46,58 +109,61 @@ function login() {
         }
         form.classList.add('was-validated')
     })
-    if(isDataOK) send_data()
+
+    if (!isDataOK) return
+
+    if (isPasswordCorrect() && isUsernameCorrect()) {
+        push_valid_record()
+        if (payload.validRecords.length == maxAttempts) {
+            prepareToSend()
+        } else {
+            $("#etUsername").focus()
+        }
+    } else {
+        push_invalid_record()
+        $("#etUsername").focus()
+    }
+    resetUsernameLog()
+    resetPasswordLog()
+    
+    Array.prototype.filter.call(forms, function (form) {
+        form.classList.remove('was-validated')
+    })
+
+
 }
 
-function send_data(){
-    var username = $("#etUsername").val()
-    var password = $("#etPassword").val()
-
-    var url = '/ws/login'
+function send_data() {
+    var url = '/ws/upload_records'
     var http_request = new XMLHttpRequest()
 
     http_request.onreadystatechange = () => {
         if (http_request.readyState == 4 && http_request.status == 200) {
             var response = JSON.parse(http_request.response);
             if (response.status == 1) {
-                alert("Usuario logeado correctamente")
-                window.location.href = '/impostor1';
+                alert("Muestras enviadas correctamente")
+                prepareToLogout()
             } else {
-                alert("Hubo un error al iniciar sesión: " + response.error)
-                resetUsernameLog()
-                resetPasswordLog()
-
-                var forms = document.getElementsByClassName('needs-validation')
-                Array.prototype.filter.call(forms, function (form) {
-                    form.classList.remove('was-validated')
-                })
-                
-                $("#etUsername").focus()
+                alert("Hubo un error al enviar las muestras, por lo que se tendrá que repetir la prueba. Error: " + response.error)
+                location.reload();
             }
         }
     }
 
     http_request.open('POST', url, true)
-    var payload = {
-        username: username,
-        password: password,
-        rawUsernameKeydown: rawUsernameKeydown,
-        rawUsernameKeyup : rawUsernameKeyup,
-        rawPasswordKeydown: rawPasswordKeydown,
-        rawPasswordKeyup: rawPasswordKeyup
-    }
+
+    payload.belongedUserId = $("#tvImpostorUserId").text()
+    payload.username = impostorUsername
+    payload.password = impostorPassword
+
     http_request.setRequestHeader('Content-Type', 'application/json');
     http_request.send(JSON.stringify(payload))
 }
 
-window.onload = function () {
-    window.localStorage.clear();
-    console.clear();
+window.onload = () => {
 
-    rawUsernameKeydown = []
-    rawUsernameKeyup = []
-    rawPasswordKeydown = []
-    rawPasswordKeyup = []
+    impostorUsername = $("#tvImpostorUsername").text()
+    impostorPassword = $("#tvImpostorPassword").text()
 
     $("#etUsername").keydown(event => {
         if (isKeyCodeAllow(event)) return
@@ -106,7 +172,9 @@ window.onload = function () {
             name: event.code,
             timeStamp: baseTime.plus(performance.now()).toString()
         })
+
     })
+
 
     $("#etUsername").keyup(event => {
         if (isKeyCodeAllow(event)) return
@@ -153,4 +221,5 @@ window.onload = function () {
     })
 
     $("#etUsername").focus()
-};
+
+}

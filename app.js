@@ -11,7 +11,8 @@ require('dotenv').config()
 
 var indexRouter = require('./routes/index')
 var signUpRouter = require('./routes/signUp')
-var impostorRouter = require('./routes/impostor1')
+var impostor1Router = require('./routes/impostor1')
+var impostor2Router = require('./routes/impostor2')
 var logoutRouter = require('./routes/logout')
 var wsRouter = require('./routes/ws')
 
@@ -56,7 +57,8 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 
 app.use('/', indexRouter)
 app.use('/signup', signUpRouter)
-app.use('/impostor1', impostorRouter)
+app.use('/impostor1', impostor1Router)
+app.use('/impostor2', impostor2Router)
 app.use('/logout', logoutRouter)
 app.use('/ws', wsRouter)
 

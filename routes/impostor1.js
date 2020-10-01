@@ -7,11 +7,6 @@ const User = require('../models/user');
 
 router.get('/', async (req, res) => {
 
-    if(req.useragent.isMobile) {
-        res.render('mobile')
-        return
-    }
-
     if (!req.session.user) {
         res.redirect('/')
     } else {
@@ -23,7 +18,7 @@ router.get('/', async (req, res) => {
 
         User.findById(randomUserId).exec((err, impostor_user) => {
             if (genuine_user && impostor_user) {
-                res.render('impostor', {
+                res.render('impostor1', {
                     subtitle: 'Tarea 2:',
                     genuine_user: genuine_user,
                     impostor_user: impostor_user
