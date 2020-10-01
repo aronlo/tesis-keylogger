@@ -5,7 +5,7 @@ const Record = require('../models/record');
 var mongoose = require('mongoose');
 var { getClientIp } = require('../utils')
 var { sendEmail } = require('../mailer');
-var { getUserImpostorRecordsCount, getUserIds } = require('../querys');
+var { getUserImpostorRecordsCount, getUserImpostorRecordsCountJs } = require('../querys');
 var moment = require('moment');
 
 router.get('/time', (req, res) => {
@@ -26,8 +26,10 @@ router.get('/ip', function (req, res) {
 })
 
 router.get('/test', async function (req, res) {
-    var a = await (getUserImpostorRecordsCount())
-    res.json(a)
+    var data = {}
+    data[mongo] = await getUserImpostorRecordsCount()
+    data[me] =  await getUserImpostorRecordsCountJs()
+    res.json(data)
 })
 
 
