@@ -27,8 +27,8 @@ router.get('/ip', function (req, res) {
 
 router.get('/test', async function (req, res) {
     var data = {}
-    data[mongo] = await getUserImpostorRecordsCount()
-    data[me] =  await getUserImpostorRecordsCountJs()
+    data.mongo = await getUserImpostorRecordsCount()
+    data.me =  await getUserImpostorRecordsCountJs()
     res.json(data)
 })
 
