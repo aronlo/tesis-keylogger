@@ -71,7 +71,7 @@ function send_data(){
                 Array.prototype.filter.call(forms, function (form) {
                     form.classList.remove('was-validated')
                 })
-                
+                $('#btnLogin').prop('disabled', false);
                 $("#etUsername").focus()
             }
         }
@@ -88,6 +88,7 @@ function send_data(){
     }
     http_request.setRequestHeader('Content-Type', 'application/json');
     http_request.send(JSON.stringify(payload))
+    $('#btnLogin').prop('disabled', true);
 }
 
 window.onload = function () {

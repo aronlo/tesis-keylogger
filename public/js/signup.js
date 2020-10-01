@@ -43,6 +43,7 @@ function send_data() {
                 window.location.href = '/';
             } else {
                 alert("Hubo un error al crear el usuario: " + response.error)
+                $('#btnSubmit').prop('disabled', false);
             }
         }
     }
@@ -62,6 +63,7 @@ function send_data() {
     }
     http_request.setRequestHeader('Content-Type', 'application/json');
     http_request.send(JSON.stringify(payload))
+    $('#btnSubmit').prop('disabled', true);
 }
 
 window.onload = () => {

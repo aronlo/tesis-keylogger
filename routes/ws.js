@@ -58,7 +58,9 @@ router.get('/status', (req, res) => {
     // 2: connecting
     // 3: disconnecting
     res.json({
-        mongo: mongoose.connection.readyState
+        mongo: mongoose.connection.readyState,
+        user: req.session.user,
+        sessionIndex: sessionIndex
     })
 })
 

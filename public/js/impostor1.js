@@ -155,6 +155,7 @@ function send_data() {
 
     http_request.setRequestHeader('Content-Type', 'application/json');
     http_request.send(JSON.stringify(payload))
+    $('#btnSend').prop('disabled', true);
 }
 
 window.onload = () => {
