@@ -3,7 +3,7 @@ var router = express.Router();
 const User = require('../models/user');
 const Record = require('../models/record');
 var mongoose = require('mongoose');
-var { getClientIp } = require('../utils')
+var { getClientIp, random_user_assignation } = require('../utils')
 var { sendEmail } = require('../mailer');
 var { getUserImpostorRecordsCount, getUserImpostorRecordsCountJs } = require('../querys');
 var moment = require('moment');
@@ -29,6 +29,7 @@ router.get('/test', async function (req, res) {
     var data = {}
     data.queryMongo = await getUserImpostorRecordsCount()
     data.queryJs =  await getUserImpostorRecordsCountJs()
+    data.random = random_user_assignation()
     res.json(data)
 })
 
