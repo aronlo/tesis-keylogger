@@ -50,7 +50,7 @@ block content
             div(class='invalid-feedback') Ingrese un nombre de usuario simple de más de 6 caracteres
 
         div(class='mb-3')
-            label(for='etPassword') Contraseña: una simple y que te sea fácil de recordar. <b>NO</b> escribas contraseñas que emplees en tus cuentas personales, pues vav a tener que ser revalada para la dinámica del experimento.
+            label(for='etPassword') Contraseña: una simple y que te sea fácil de recordar. <b>NO</b> escribas contraseñas que emplees en tus cuentas personales, pues van a ser reveladas a otros usuarios para la dinámica de este experimento.
             if password_len
                 input(type='text', class='form-control', id='etPassword' placeholder='Contraseña', ,minlength=password_len ,maxlength= password_len, required)
                 div(class='invalid-feedback') Ingrese una contraseña simple de #{password_len} caracteres
