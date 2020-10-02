@@ -187,6 +187,7 @@ router.post('/signup', (req, res) => {
                     age: req.body.age,
                     email: req.body.email,
                     username: req.body.username,
+                    dni: req.body.dni,
                     password: req.body.password,
                     isImposedPassword: req.body.isImposedPassword,
                     genre: req.body.genre,

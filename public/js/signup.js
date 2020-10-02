@@ -25,6 +25,7 @@ function send_data() {
     var name = $("#etName").val()
     var lastname = $("#etLastname").val()
     var age = $("#etAge").val()
+    var dni = $("#etDNI").val()
     var email = $("#etEmail").val()
     var username = $("#etUsername").val()
     var password = $("#etPassword").val()
@@ -53,9 +54,10 @@ function send_data() {
         name: name,
         lastname: lastname,
         age: age,
+        dni: dni,
         email: email,
         username: username,
-        password: password, 
+        password: password,
         genre: genre, 
         handedness: handedness,
         handDesease: handDesease,

@@ -49,9 +49,27 @@ function login() {
     if(isDataOK) send_data()
 }
 
+function areEqual(){
+    var len = arguments.length;
+    for (var i = 1; i< len; i++){
+       if (arguments[i] === null || arguments[i] !== arguments[i-1])
+          return false;
+    }
+    return true;
+ }
+
 function send_data(){
     var username = $("#etUsername").val()
     var password = $("#etPassword").val()
+
+
+    if (!areEqual(rawUsernameKeydown.length, rawUsernameKeyup.length, username.length) || !areEqual(rawPasswordKeydown.length, rawPasswordKeyup.length, password.length)) {
+        resetPasswordLog()
+        resetUsernameLog()
+        $("#etUsername").focus()
+        return
+    }
+
 
     var url = '/ws/login'
     var http_request = new XMLHttpRequest()

@@ -35,6 +35,11 @@ block content
 
 
         div(class='mb-3')
+            label(for='etDNI') DNI: se solicita para rellenar el siguiente <a href="https://docs.google.com/document/d/1KRUzQ3awPRYSJgkOeOqamFKXvKiH1JSgu6VfpZ0doMM/edit?usp=sharing", target="_blank">Documento de Consentimiento</a>
+            input(type='text', class='form-control', id='etDNI' placeholder='DNI', required ,pattern="[0-9]{8}")
+            div(class='invalid-feedback') Ingrese un DNI válido
+
+        div(class='mb-3')
             label(for='etEmail') E-mail: nos ayudará a mandarte correos recordatorios
             input(type='email', class='form-control', id='etEmail' placeholder='Email', required)
             div(class='invalid-feedback') Ingrese un email válido
@@ -45,7 +50,7 @@ block content
             div(class='invalid-feedback') Ingrese un nombre de usuario simple de más de 6 caracteres
 
         div(class='mb-3')
-            label(for='etPassword') Contraseña: una simple y que te sea facil de recordar.
+            label(for='etPassword') Contraseña: una simple y que te sea fácil de recordar. <b>NO</b> escribas contraseñas que emplees en tus cuentas personales, pues vav a tener que ser revalada para la dinámica del experimento.
             if password_len
                 input(type='text', class='form-control', id='etPassword' placeholder='Contraseña', ,minlength=password_len ,maxlength= password_len, required)
                 div(class='invalid-feedback') Ingrese una contraseña simple de #{password_len} caracteres
@@ -70,11 +75,16 @@ block content
             label(for='rdHandedness') Mano dominante
             div(class='custom-control custom-radio')
                 input(type='radio',name='rdHandedness', id='right_handed', class='custom-control-input',value='right', required)
-                label(for='right_handed', class='custom-control-label') Diestro
+                label(for='right_handed', class='custom-control-label') Derecho
 
             div(class='custom-control custom-radio')
                 input(type='radio',name='rdHandedness', id='left_handed', class='custom-control-input',value='left', required)
-                label(for='left_handed', class='custom-control-label') Zurdo
+                label(for='left_handed', class='custom-control-label') Izquierdo
+
+            div(class='custom-control custom-radio')
+                input(type='radio',name='rdHandedness', id='both_handed', class='custom-control-input',value='both', required)
+                label(for='both_handed', class='custom-control-label') Ambas
+
             div(class='invalid-feedback') Seleccione una opción
 
 
@@ -99,7 +109,7 @@ block content
                 input(type="checkbox", class="form-check-input", id="cbConsent")
                 label(for="cbConsent",class="form-check-label") Doy consentimiento de haber leído los <a href="https://docs.google.com/document/d/1DcxA9IjDIwYiLi9qR2Y_fCaGsd7_Kx6Zsq2xlBKE6DM/edit?usp=sharing" target="_blank">Términos y Condiciones</a>
 
-                p Descargar el <a href="https://docs.google.com/document/d/1KRUzQ3awPRYSJgkOeOqamFKXvKiH1JSgu6VfpZ0doMM/edit?usp=sharing", target="_blank">Documento de Consentimiento</a> y enviarlo a: <a href="mailto:aron.lo.li@hotmail.com?subject=Envio de Documento de Consentimiento">aron.lo.li@hotmail.com</a>   
+            h4 Por favor, descargar el Documento de Consentimiento <a href="https://docs.google.com/document/d/1KRUzQ3awPRYSJgkOeOqamFKXvKiH1JSgu6VfpZ0doMM/edit?usp=sharing", target="_blank">(click aquí)</a> y enviarlo a: <a href="mailto:aron.lo.li@hotmail.com?subject=Envio de Documento de Consentimiento">aron.lo.li@hotmail.com</a>   
                 
             
             
