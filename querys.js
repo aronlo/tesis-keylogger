@@ -31,7 +31,7 @@ function getUserImpostorRecordsCount() {
 function getUserImpostorRecordsCountMongo() {
     return new Promise(resolve => {
         const o = {};
-        o.map = function () { emit(this.belongedUserId, this.belongedUserId.toString() != this.performedUserId.toString() ? 1 : 0) };
+        o.map = function () { emit(this.belongedUserId, (this.belongedUserId.toString() != this.performedUserId.toString()) && (this.valid == true) ? 1 : 0) };
         o.reduce = function (k, vals) {
             return vals.reduce((acc, curr) => acc + curr, 0)
         };
