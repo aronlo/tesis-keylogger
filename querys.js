@@ -27,10 +27,25 @@ function getUserImpostorRecordsCount() {
     })
 }
 
+
+function getUserImpostorRecordsCountMongo() {
+    return new Promise(resolve => {
+        const o = {};
+        o.map = function () { emit(this.belongedUserId, this.belongedUserId.toString() != this.performedUserId.toString() ? 1 : 0) };
+        o.reduce = function (k, vals) {
+            return vals.reduce((acc, curr) => acc + curr, 0)
+        };
+        Record
+            .mapReduce(o, function (err, results) {
+            resolve(results)
+        })
+    })
+}
+
 function getUserImpostorRecordsCountJs() {
     return new Promise(async resolve => {
         var results = []
-        var records = await Record.find()
+        var records = await Record.find({valid: true})
         records.forEach(e1 => {
             if (e1.belongedUserId.toString() != e1.performedUserId.toString()) {
                 if (results.findIndex(e2 => e2._id.toString() == e1.belongedUserId.toString()) == -1) {
@@ -45,7 +60,26 @@ function getUserImpostorRecordsCountJs() {
     })
 }
 
+function getUserImpostorRecordsCountJs2() {
+    return new Promise(async resolve => {
+        var results = []
+        var records = await Record.find({ valid: true }).$where("this.belongedUserId.toString() != this.performedUserId.toString()")
+        records.forEach(e1 => {
 
-exports.getUserImpostorRecordsCount = getUserImpostorRecordsCount
+            if (results.findIndex(e2 => e2._id.toString() == e1.belongedUserId.toString()) == -1) {
+                results.push({ _id: e1.belongedUserId, value: 0 })
+            }
+            var idx = results.findIndex(e3 => e3._id.toString() == e1.belongedUserId.toString())
+            results[idx].value = results[idx].value + 1
+
+        })
+        var data = { results: results }
+        resolve(data)
+    })
+}
+
+
+exports.getUserImpostorRecordsCount = getUserImpostorRecordsCountMongo
 exports.getUserImpostorRecordsCountJs = getUserImpostorRecordsCountJs
+exports.getUserImpostorRecordsCountJs2 = getUserImpostorRecordsCountJs2
 exports.getUserIds = getUserIds
