@@ -4,7 +4,7 @@ const User = require('../models/user');
 const Record = require('../models/record');
 var mongoose = require('mongoose');
 var { getClientIp } = require('../utils')
-var { sendEmail } = require('../mailer');
+var { sendEmail , sendRecoverPassEmail} = require('../mailer');
 var { getUserImpostorRecordsCount, getUserImpostorRecordsCountJs } = require('../querys');
 var moment = require('moment');
 
@@ -282,6 +282,22 @@ router.post('/upload_records', (req, res) => {
         }
     })
 
+})
+
+router.post('/forgotpassword', (req, res) =>  {
+    var response = {}
+    User.findOne({email : req.body.email}).exec((err, doc) => {
+        if(doc == null){
+            response.status = 0
+            response.error = "No se encontró ningun usuario con el correo proporcionado."
+            res.json(response)
+        } else {
+            sendRecoverPassEmail(doc.email, doc.username, doc.password)
+            response.status = 1
+            response.msg = "Las creedenciales fueron enviadas a tu correo electrónico."
+            res.json(response)
+        }
+    })
 })
 
 module.exports = router
