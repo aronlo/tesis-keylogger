@@ -20,7 +20,7 @@ var sendEmail = async (email, name, lastname, dni, un, pass) => {
       `
   var path = await generatePDF(name, lastname, dni)
   var mailOptions = {
-    from: 'Aron Lo Li <aron.lo.li@hotmail.com>',
+    from: 'Aron Lo <aron.lo@yahoo.com>',
     to: email,
     cc: 'aron.lo@yahoo.com',
     subject: '¡Cuenta registrada existosamente!',
@@ -55,7 +55,7 @@ var sendRecoverPassEmail = async (email, name, lastname, dni ,un, pass) => {
 
   var path = await generatePDF(name, lastname, dni)
   var mailOptions = {
-    from: 'Aron Lo Li <aron.lo.li@hotmail.com>',
+    from: 'Aron Lo <aron.lo@yahoo.com>',
     to: email,
     cc: 'aron.lo@yahoo.com',
     subject: '¡Datos de la cuenta!',
@@ -88,7 +88,7 @@ var sendLogoutEmail = (email, name, indexSession) => {
       `
 
   var mailOptions = {
-    from: 'Aron Lo Li <aron.lo.li@hotmail.com>',
+    from: 'Aron Lo <aron.lo@yahoo.com>',
     to: email,
     cc: 'aron.lo@yahoo.com',
     subject: '¡Datos registados correctamente!',
