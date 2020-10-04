@@ -4,9 +4,11 @@ const User = require('../models/user');
 const Record = require('../models/record');
 var mongoose = require('mongoose');
 var { getClientIp } = require('../utils')
-var { sendEmail , sendRecoverPassEmail} = require('../mailer');
+var { sendEmail, sendRecoverPassEmail } = require('../mailer');
 var { getUserImpostorRecordsCount, getUserImpostorRecordsCountJs } = require('../querys');
 var moment = require('moment');
+const fs = require('fs');
+const path = require('path')
 
 router.get('/time', (req, res) => {
     var currentTime = new Date
@@ -62,6 +64,19 @@ router.get('/status', (req, res) => {
         user: req.session.user,
         sessionIndex: sessionIndex
     })
+})
+
+router.get('/temp', async (req, res) => {
+    var tempdir =  path.join(__dirname, '..', 'temp')
+    console.log(tempdir)
+    fs.readdir(tempdir,  (err, files) =>  {
+        //handling error
+        if (err) {
+            res.json({ msg: 'Unable to scan directory: ' + err });
+        } else {
+            res.json({ files : files})
+        }
+    });
 })
 
 router.post('/login', (req, res) => {
