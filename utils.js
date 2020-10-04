@@ -1,4 +1,6 @@
 var Chance = require('chance');
+const PDFDocument = require('pdfkit')
+const fs = require('fs')
 
 var random_user_assignation = () => {
     var chance = new Chance();
@@ -45,7 +47,75 @@ function getClientIp(req) {
   };
 
 
+var generatePDF = (name, lastname, dni) => {
+  return new Promise(resolve => {
+    var doc = new PDFDocument;
+    var path = "./temp/" + new Date().getTime() + ".pdf"
+    var writeStream = fs.createWriteStream(path)
+    doc.pipe(writeStream);
+
+    const h1_size = 21
+    const h3_size = 11
+    const title_size = 15
+    const body_size = 12
+    const spacing = 0.7
+
+    const teacher_dni = process.env.TEACHER_DNI
+
+    doc
+      .font('Times-Bold')
+      .fontSize(h1_size)
+      .text('Anexo 3. Formato referencial de consentimiento informado')
+
+      .font('Times-Roman', h3_size)
+      .moveDown(spacing)
+      .text('UNIVERSIDAD DE LIMA')
+      .moveDown(spacing)
+      .text('FACULTAD DE INGENIERÍA Y ARQUITECTURA')
+      .moveDown(spacing)
+      .text('CARRERA DE INGENIERÍA DE SISTEMAS')
+
+      .moveDown(spacing + 0.6)
+      .font('Times-Bold', title_size)
+      .text('MODELO REFERENCIAL CONSENTIMIENTO INFORMADO', {
+        align: 'center'
+      })
+
+      .moveDown(spacing + 0.2)
+      .font('Times-Roman', body_size)
+      .text(`Yo, ${name} ${lastname} identificado con DNI Nro. ${dni} ACEPTO participar en el proceso de validación del trabajo de investigación titulado “Metodología para la generación de un dataset de dinámica de tecleo basado en un entorno web”, que se encuentra en evaluación experimental, mediante un prototipo de modelo. Comprendo que mi participación es totalmente libre y voluntaria, y que aún después de iniciada la investigación, puedo decidir suspender mi participación en cualquier momento, sin expresión de causa y sin que ello ocasione algún perjuicio.`, {
+        align: 'justify'
+      })
+
+      .moveDown(spacing + 0.2)
+      .text(`Este trabajo de investigación corresponde al estudiante (o estudiantes) ARON LO LI de la Universidad de Lima, carrera de Ingeniería de Sistemas identificado(s) con DNI Nro. 75623926, quienes están asesorados por el docente: JUAN MANUEL GUTIERREZ CARDENAS con DNI Nro. ${teacher_dni}.`, {
+        align: 'justify'
+      })
+
+      .moveDown(spacing + 0.2)
+      .text('Los responsables del proyecto podrán divulgar la información que se genere producto de mi participación en la investigación, mas no podrán divulgar mi información personal.', {
+        align: 'justify'
+      })
+
+      .moveDown(spacing + 0.2)
+      .text('Declaro que mi participación no implica ninguna contraprestación, por tratarse de una investigación académica.', {
+        align: 'justify'
+      })
+
+      .moveDown(spacing + 0.8)
+      .text(`Firma: ${name} ${lastname}`, {
+        align: 'center'
+      })
+
+    doc.end();
+    writeStream.on('finish', function () {
+      resolve(path)
+    })
+  })
+}
+
 exports.random_user_assignation = random_user_assignation
 exports.random_user_of_array = random_user_of_array
 exports.lcm = lcm_of_array
 exports.getClientIp = getClientIp
+exports.generatePDF = generatePDF
