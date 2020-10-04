@@ -209,7 +209,10 @@ router.post('/signup', (req, res) => {
                         response.data = doc
 
                         //Envio de correo
-                        sendEmail(doc.email, 
+                        sendEmail(doc.email,
+                            doc.name,
+                            doc.lastname,
+                            doc.dni,
                             doc.username,
                             doc.password)
                     }
@@ -292,7 +295,7 @@ router.post('/forgotpassword', (req, res) =>  {
             response.error = "No se encontró ningun usuario con el correo proporcionado."
             res.json(response)
         } else {
-            sendRecoverPassEmail(doc.email, doc.username, doc.password)
+            sendRecoverPassEmail(doc.email, doc.name, doc.lastname, doc.dni, doc.username, doc.password)
             response.status = 1
             response.msg = "Las creedenciales fueron enviadas a tu correo electrónico."
             res.json(response)

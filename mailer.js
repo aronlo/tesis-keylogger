@@ -1,11 +1,13 @@
 const mailgun = require("mailgun-js");
+var { generatePDF } = require("./utils")
+const fs = require('fs')
 
 const mg = mailgun({
   apiKey: process.env.MAILGUN_API,
   domain: process.env.MAILGUN_DOMAIN
 });
 
-var sendEmail = (email, un, pass) => {
+var sendEmail = async (email, name, lastname, dni, un, pass) => {
   
   var html =
       `
@@ -16,13 +18,14 @@ var sendEmail = (email, un, pass) => {
       <p>Número de contacto: 959291344</p>
       <p>Aron Lo</p>
       `
-
+  var path = await generatePDF(name, lastname, dni)
   var mailOptions = {
     from: 'Aron Lo Li <aron.lo.li@hotmail.com>',
     to: email,
     cc: 'aron.lo@yahoo.com',
     subject: '¡Cuenta registrada existosamente!',
-    html: html
+    html: html,
+    attachment: path.toString()
   };
 
   mg.messages().send(mailOptions, function (error, body) {
@@ -30,15 +33,18 @@ var sendEmail = (email, un, pass) => {
       console.log(error)
     } else {
       console.log('Email sent: ' + body.id);
+      fs.unlink(path.toString(), err => {
+        if (!err) console.log(path.toString() + " deleted");
+      })
     }
   });
 }
 
 
-var sendRecoverPassEmail = (email, un, pass) => {
+var sendRecoverPassEmail = async (email, name, lastname, dni ,un, pass) => {
 
   var html =
-      `
+    `
       <h1>Tesis: Recolección de Patrones de Tecleo</h1>
       <p>Usuario: ${un}</p>
       <p>Contraseña: ${pass}</p>
@@ -47,12 +53,14 @@ var sendRecoverPassEmail = (email, un, pass) => {
       <p>Aron Lo</p>
       `
 
+  var path = await generatePDF(name, lastname, dni)
   var mailOptions = {
     from: 'Aron Lo Li <aron.lo.li@hotmail.com>',
     to: email,
     cc: 'aron.lo@yahoo.com',
     subject: '¡Datos de la cuenta!',
-    html: html
+    html: html,
+    attachment: path.toString()
   };
 
   mg.messages().send(mailOptions, function (error, body) {
@@ -60,6 +68,9 @@ var sendRecoverPassEmail = (email, un, pass) => {
       console.log(error)
     } else {
       console.log('Email sent: ' + body.id);
+      fs.unlink(path.toString(), err => {
+        if (!err) console.log(path.toString() + " deleted");
+      })
     }
   });
 }
