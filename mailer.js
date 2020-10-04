@@ -1,14 +1,12 @@
-var nodemailer = require('nodemailer');
+const mailgun = require("mailgun-js");
+
+const mg = mailgun({
+  apiKey: process.env.MAILGUN_API,
+  domain: process.env.MAILGUN_DOMAIN
+});
 
 var sendEmail = (email, un, pass) => {
-  var transporter = nodemailer.createTransport({
-    service: 'hotmail',
-    auth: {
-      user: 'aron.lo.li@hotmail.com',
-      pass: process.env.EMAIL_PASS
-    }
-  });
-
+  
   var html =
       `
       <h1>Tesis: Recolección de Patrones de Tecleo</h1>
@@ -20,30 +18,24 @@ var sendEmail = (email, un, pass) => {
       `
 
   var mailOptions = {
-    from: 'aron.lo.li@hotmail.com',
+    from: 'Aron Lo Li <aron.lo.li@hotmail.com>',
     to: email,
+    cc: 'aron.lo@yahoo.com',
     subject: '¡Cuenta registrada existosamente!',
     html: html
   };
 
-  transporter.sendMail(mailOptions, function (error, info) {
+  mg.messages().send(mailOptions, function (error, body) {
     if (error) {
-      console.log(error);
+      console.log(error)
     } else {
-      console.log('Email sent: ' + info.response);
+      console.log('Email sent: ' + body.id);
     }
   });
 }
 
 
 var sendRecoverPassEmail = (email, un, pass) => {
-  var transporter = nodemailer.createTransport({
-    service: 'hotmail',
-    auth: {
-      user: 'aron.lo.li@hotmail.com',
-      pass: process.env.EMAIL_PASS
-    }
-  });
 
   var html =
       `
@@ -56,29 +48,23 @@ var sendRecoverPassEmail = (email, un, pass) => {
       `
 
   var mailOptions = {
-    from: 'aron.lo.li@hotmail.com',
+    from: 'Aron Lo Li <aron.lo.li@hotmail.com>',
     to: email,
+    cc: 'aron.lo@yahoo.com',
     subject: '¡Datos de la cuenta!',
     html: html
   };
 
-  transporter.sendMail(mailOptions, function (error, info) {
+  mg.messages().send(mailOptions, function (error, body) {
     if (error) {
-      console.log(error);
+      console.log(error)
     } else {
-      console.log('Email sent: ' + info.response);
+      console.log('Email sent: ' + body.id);
     }
   });
 }
 
 var sendLogoutEmail = (email, name, indexSession) => {
-  var transporter = nodemailer.createTransport({
-    service: 'hotmail',
-    auth: {
-      user: 'aron.lo.li@hotmail.com',
-      pass: process.env.EMAIL_PASS
-    }
-  });
 
   var html =
       `
@@ -91,17 +77,18 @@ var sendLogoutEmail = (email, name, indexSession) => {
       `
 
   var mailOptions = {
-    from: 'aron.lo.li@hotmail.com',
+    from: 'Aron Lo Li <aron.lo.li@hotmail.com>',
     to: email,
+    cc: 'aron.lo@yahoo.com',
     subject: '¡Datos registados correctamente!',
     html: html
   };
 
-  transporter.sendMail(mailOptions, function (error, info) {
+  mg.messages().send(mailOptions, function (error, body) {
     if (error) {
-      console.log(error);
+      console.log(error)
     } else {
-      console.log('Email sent: ' + info.response);
+      console.log('Email sent: ' + body.id);
     }
   });
 }
