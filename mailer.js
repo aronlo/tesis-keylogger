@@ -75,13 +75,13 @@ var sendRecoverPassEmail = async (email, name, lastname, dni ,un, pass) => {
   });
 }
 
-var sendLogoutEmail = (email, name, indexSession) => {
+var sendLogoutEmail = (email, name ) => {
 
   var html =
       `
       <h1>Tesis: Recolección de Patrones de Tecleo</h1>
       <p>Felicidades ${name} </p>
-      <p>Haz completado todas las tareas del intento N° ${indexSession + 1} correctamente.</p>
+      <p>Haz completado correctamente todas las tareas del día: ${new Date().toLocaleDateString()}.</p>
       <p>Te agradezco mucho por participar en las pruebas.</p>
       <p>Número de contacto: 959291344</p>
       <p>Aron Lo</p>

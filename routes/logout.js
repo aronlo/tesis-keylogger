@@ -6,7 +6,7 @@ router.get('/', function(req, res) {
     var user = req.session.user
     var sessionIndex = req.session.sessionIndex
 
-    sendLogoutEmail(user.email, user.name, sessionIndex)
+    if(sessionIndex >= 2 ) sendLogoutEmail(user.email, user.name)
 
     req.session.destroy((err) => {
         if(err) console.log(err)

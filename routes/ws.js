@@ -81,6 +81,10 @@ router.get('/temp', async (req, res) => {
 
 router.post('/login', (req, res) => {
 
+    console.log("Inicio de sesión de:")
+    console.log("Usuario: " +req.body.username)
+    console.log("Contraseña: " +req.body.password)
+
     User.findOne({
         username: req.body.username,
         password: req.body.password
