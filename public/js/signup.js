@@ -8,7 +8,11 @@ function sign_up() {
         form.classList.add('was-validated')
     })
     console.log(isDataOK)
-    if(isDataOK) send_data()
+    if(isDataOK) {
+        send_data() 
+    } else{
+        alert("Error: Algunos de tus campos están mal ingresados.")
+    }
 }
 
 function parseBool(val)
