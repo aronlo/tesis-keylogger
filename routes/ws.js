@@ -4,7 +4,7 @@ const User = require('../models/user');
 const Record = require('../models/record');
 var mongoose = require('mongoose');
 var { getClientIp } = require('../utils')
-var { sendEmail, sendRecoverPassEmail } = require('../mailer');
+var { sendEmailWord, sendRecoverPassEmail } = require('../mailer');
 var { getUserImpostorRecordsCount, getUserImpostorRecordsCountJs } = require('../querys');
 var moment = require('moment');
 const fs = require('fs');
@@ -224,11 +224,11 @@ router.post('/signup', (req, res) => {
                         response.error = 'Error en el mongo server. Contactarse al 959291344.'
                     } else {
                         response.status = 1
-                        response.msg = `Se envió al correo ${doc.email} las credenciales con las que accederás al sistema.`
+                        response.msg = `Se envió al correo ${doc.email} las credenciales con las que accederás al sistema y una copia documento de consentimiento. Por favor enviarlo firmado al correo: aron.lo@yahoo.com`
                         response.data = doc
 
                         //Envio de correo
-                        sendEmail(doc.email,
+                        sendEmailWord(doc.email,
                             doc.name,
                             doc.lastname,
                             doc.dni,
