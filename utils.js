@@ -60,8 +60,6 @@ var generatePDF = (name, lastname, dni) => {
     const body_size = 12
     const spacing = 0.7
 
-    const teacher_dni = process.env.TEACHER_DNI
-
     doc
       .font('Times-Bold')
       .fontSize(h1_size)
@@ -88,7 +86,7 @@ var generatePDF = (name, lastname, dni) => {
       })
 
       .moveDown(spacing + 0.2)
-      .text(`Este trabajo de investigación corresponde al estudiante (o estudiantes) ARON LO LI de la Universidad de Lima, carrera de Ingeniería de Sistemas identificado(s) con DNI Nro. 75623926, quienes están asesorados por el docente: JUAN MANUEL GUTIERREZ CARDENAS con DNI Nro. ${teacher_dni}.`, {
+      .text(`Este trabajo de investigación corresponde al estudiante (o estudiantes) ARON LO LI de la Universidad de Lima, carrera de Ingeniería de Sistemas identificado(s) con DNI Nro. 75623926, quienes están asesorados por los docentes: JUAN MANUEL GUTIERREZ CARDENAS con DNI Nro. 29515539 y VICTOR HUGO AYMA QUIRITA CON DNI Nro. 45025095.`, {
         align: 'justify'
       })
 
