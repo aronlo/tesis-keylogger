@@ -8,7 +8,7 @@ const User = require('../models/user');
 router.get('/', async (req, res) => {
     try {
         if (!req.session.user) {
-            res.redirect('/')
+            res.redirect('/genuine')
         } else {
             var genuine_user = req.session.user
 

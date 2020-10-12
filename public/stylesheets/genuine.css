@@ -1,0 +1,22 @@
+.paragraph{
+    text-align: center;
+}
+
+.subtitle {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+}
+
+button, a, hr {
+    width: 100%;
+    max-width: 330px;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.footer {
+    margin: auto;
+    margin-top: 40px;
+    max-width: 330px;
+}

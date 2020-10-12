@@ -5,34 +5,37 @@ block css
 
 block scripts
     script(src='https://cdn.jsdelivr.net/npm/big.js@6.0.0/big.min.js')
-    script(src='/js/index.js')
 
 block content
 
     div(class='paragraph')
-        h5 Si quieres revisar la dinámica del experimento, dale click al siguiente enlace  <a href="./docs/diagram.pdf" target="_blank" >(click aqui)</a>
-        h5 Tarea 1: Inicio de sesión
-        p(class = "subtitle") En esta tarea, usarás el nombre de usuario y la contraseña de registro para iniciar sesión. Si no te acuerdas, puedes verificar el correo que te mandamos con las credenciales de tu cuenta.
+        p El presente trabajo tiene como objetivo recopilar los datos provenientes en la forma de teclear de los usuario para la creación de un dataset que pueda ser usado posteriormente en trabajos de #[a(href="https://es.wikipedia.org/wiki/Din%C3%A1mica_de_tecleo" target="_blank") Dinámica de Tecleo] por medio de esta plataforma web.
+        p Para la dinámica tendrás que realizar los siguientes pasos:
+            ul
+                li Si es la primera vez que accedes al sistema y aún no tienes una cuenta, tendrás que registrarte en el sistema. Al momento de registrarte, es importante que descargues el documento de consentimiento y la reenvies al correo del investigador.
+                li #[b Tarea 1: (1° vez)] Ingresa al sistema con tus #[b propias] creedenciales.
+                li #[b Tarea 2: (1° vez)] El sistema te mostrará las creedenciales de un usuario seleccionado de forma aleatoria y tendrás que acceder al sistema con esas creedenciales 3 veces.
+                li #[b Tarea 3: (1° vez)] El sistema te mostrará las creedenciales de #[b otro] usuario seleccionado de forma aleatoria y tendrás que acceder al sistema con esas creedenciales 3 veces.
+                li #[b Cerrar sesión] y hacer el flujo nuevamente.
+                li #[b Tarea 1: (2° vez)] Ingresa nuevamente al sistema con tus #[b propias] creedenciales.
+                li #[b Tarea 2: (2° vez)] El sistema te mostrará las creedenciales de #[b otro] usuario seleccionado de forma aleatoria y tendrás que acceder al sistema con esas creedenciales 3 veces.
+                li #[b Tarea 3: (2° vez)] El sistema te mostrará las creedenciales de #[b otro] usuario seleccionado de forma aleatoria y tendrás que acceder al sistema con esas creedenciales 3 veces.
+                li #[b Cerrar sesión] y hacer el flujo nuevamente.
+                li #[b Tarea 1: (3° vez)] Ingresa nuevamente al sistema con tus #[b propias] creedenciales.
+                li #[b Tarea 2: (3° vez)] El sistema te mostrará las creedenciales de #[b otro] usuario seleccionado de forma aleatoria y tendrás que acceder al sistema con esas creedenciales 3 veces.
+                li #[b Tarea 3: (3° vez)] El sistema te mostrará las creedenciales de #[b otro] usuario seleccionado de forma aleatoria y tendrás que acceder al sistema con esas creedenciales 3 veces.
+                li Finalmente tendrás que #[b cerrar sesión], donde se te mandará un correo indicando que completaste todas las pruebas de ese día correctamente. Si intentas iniciar sesión nuevamente, no te dejará el sistema.
 
-    form(class='needs-validation form-signin', id='signup_form', style='margin-top:20px', novalidate, autocomplete="off")
+        p Si quieres revisar la dinámica del experimento en una diagrama, dale click al siguiente #[a(href="./docs/diagram.pdf" target="_blank") enlace].
+        p Tambíen encontrarás un video con la explicación en el siguiente enlace de #[a(href="https://youtu.be/aPfgiJF9Qes" target="_blank") Youtube].
+        p Si tienes algunda duda, puedes contactarte al #[a(href="tel:+51959291344") 959 291 344] / #[a(href="mailto:aron.lo@yahoo.com?subject=Consulta") aron.lo@yahoo.com]
 
-      div(class='mb-3')
-        label(for='etUsername', class='sr-only') Nombre de Usuario
-        input(type='text', id='etUsername', class='form-control', placeholder='Nombre de Usuario', required)
-        div(class='invalid-feedback') Ingrese nombre de usuario.
+        hr
 
-      div(class='mb-3')
-        label(for='etPassword', class='sr-only') Contraseña
-        input(type='password', id='etPassword', class='form-control', placeholder='Contraseña', required) 
-        div(class='invalid-feedback') Ingrese constraseña.
+        a(class='btn btn-lg btn-success btn-block', href='/genuine') Iniciar con la Dinámica
 
-    button(class='btn btn-lg btn-primary btn-block',id = "btnLogin", onclick='login()') Iniciar Sesión
+        hr(class= "hr-special")
 
-    hr
+        a(class='btn btn-lg btn-primary btn-block', href='/signup') Registrarse
 
-    a(class='btn btn-lg btn-primary btn-block', href='/signup') Registrarse
-
-    a(class='btn btn-lg btn-outline-primary btn-block', href='/forgotpassword') ¿Olvidaste tu contraseña?
-
-    div(class='paragraph footer')
-      p Si tienes algunda duda, puedes contactarte al <a href="tel:+51959291344">959 291 344</a> / <a href="mailto:aron.lo@yahoo.com?subject=Consulta">aron.lo@yahoo.com</a>
+        a(class='btn btn-lg btn-outline-primary btn-block', href='/forgotpassword') ¿Olvidaste tu contraseña?

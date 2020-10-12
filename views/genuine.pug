@@ -1,0 +1,30 @@
+extends layout
+
+block css
+  link(rel="stylesheet", href="/stylesheets/genuine.css")
+
+block scripts
+    script(src='https://cdn.jsdelivr.net/npm/big.js@6.0.0/big.min.js')
+    script(src='/js/genuine.js')
+
+block content
+
+    div(class='paragraph')
+        h5 Tarea 1: Inicio de sesión
+        p(class = "subtitle") En esta tarea, usarás el nombre de usuario y la contraseña de registro para iniciar sesión. Si no te acuerdas, puedes verificar el correo que te mandamos con las credenciales de tu cuenta.
+
+    form(class='needs-validation form-signin', id='signup_form', style='margin-top:20px', novalidate, autocomplete="off")
+
+      div(class='mb-3')
+        label(for='etUsername', class='sr-only') Nombre de Usuario
+        input(type='text', id='etUsername', class='form-control', placeholder='Nombre de Usuario', required)
+        div(class='invalid-feedback') Ingrese nombre de usuario.
+
+      div(class='mb-3')
+        label(for='etPassword', class='sr-only') Contraseña
+        input(type='password', id='etPassword', class='form-control', placeholder='Contraseña', required) 
+        div(class='invalid-feedback') Ingrese constraseña.
+
+    button(class='btn btn-lg btn-primary btn-block',id = "btnLogin", onclick='login()') Iniciar Sesión
+
+    a(class='btn btn-lg btn-primary btn-block', href='/') Regresar
