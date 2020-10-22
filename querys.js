@@ -26,6 +26,7 @@ function getUserImpostorRecordsCount() {
     })
 }
 
+/*
 function getUserImpostorRecordsCountJs() {
     return new Promise(async resolve => {
         var results = []
@@ -41,8 +42,8 @@ function getUserImpostorRecordsCountJs() {
         resolve(data)
     })
 }
-
+*/
 
 exports.getUserImpostorRecordsCount = getUserImpostorRecordsCount
-exports.getUserImpostorRecordsCountJs = getUserImpostorRecordsCountJs
+//exports.getUserImpostorRecordsCountJs = getUserImpostorRecordsCountJs
 exports.getUserIds = getUserIds
