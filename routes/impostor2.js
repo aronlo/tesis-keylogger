@@ -28,7 +28,8 @@ router.get('/', async (req, res) => {
                     res.render('impostor2', {
                         subtitle: 'Tarea 3:',
                         genuine_user: genuine_user,
-                        impostor_user: impostor_user
+                        impostor_user: impostor_user,
+                        sessionIndex: req.session.sessionIndex
                     })
                 } else {
                     res.redirect('/')

@@ -61,6 +61,14 @@ block content
             div(class="form-group")
             button(type="button", id="btnSend", class="btn btn-lg btn-success btn-block", onclick="send_data()") Guardar muestra
 
-        div(class="form-group hidden" id="divLogout")
-            div(class="form-group")
-            button(type="button", id="btnLogout", class="btn btn-lg btn-danger btn-block", onclick="logout()") Cerrar Sesión
+        if sessionIndex < 2
+
+            div(class="form-group hidden" id="divLogout")
+                div(class="form-group")
+                button(type="button", id="btnLogout", class="btn btn-lg btn-warning btn-block", onclick="logout()") Iniciar tareas del flujo #{sessionIndex + 2}
+
+        else 
+
+            div(class="form-group hidden" id="divLogout")
+                div(class="form-group")
+                button(type="button", id="btnLogout", class="btn btn-lg btn-danger btn-block", onclick="logout()") Cerrar Sesión
